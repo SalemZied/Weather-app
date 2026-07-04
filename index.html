@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=1366, maximum-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="../animaproject.s3.amazonaws.com/home/favicon.png">
+    <meta name="og:type" content="website">
+    <meta name="twitter:card" content="photo">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/media/favicon-light.png">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+
+
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <style>
+        @import url("./assets/css/reset.min.css");
+
+        /*@import url("https://fonts.googleapis.com/css?family=Nunito:700,400");*/
+
+
+        .screen textarea:focus,
+        .screen input:focus {
+            outline: none;
+        }
+
+        .screen * {
+            -webkit-font-smoothing: antialiased;
+            box-sizing: border-box;
+        }
+
+        .screen div {
+            -webkit-text-size-adjust: none;
+        }
+
+        .component-wrapper a {
+            display: contents;
+            pointer-events: auto;
+            text-decoration: none;
+        }
+
+        .component-wrapper * {
+            -webkit-font-smoothing: antialiased;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        .component-wrapper a *,
+        .component-wrapper input,
+        .component-wrapper video,
+        .component-wrapper iframe {
+            pointer-events: auto;
+        }
+
+        .component-wrapper.not-ready,
+        .component-wrapper.not-ready * {
+            visibility: hidden !important;
+        }
+
+        .screen a {
+            display: contents;
+            text-decoration: none;
+        }
+
+        .full-width-a {
+            width: 100%;
+        }
+
+        .full-height-a {
+            height: 100%;
+        }
+
+        .container-center-vertical {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .container-center-vertical>* {
+            flex-shrink: 0;
+            pointer-events: auto;
+        }
+
+        .container-center-horizontal {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            pointer-events: none;
+            width: 100%;
+        }
+
+        .container-center-horizontal>* {
+            flex-shrink: 0;
+            pointer-events: auto;
+        }
+
+        .auto-animated div {
+            --z-index: -1;
+            opacity: 0;
+            position: absolute;
+        }
+
+        .auto-animated input {
+            --z-index: -1;
+            opacity: 0;
+            position: absolute;
+        }
+
+        .auto-animated .container-center-vertical,
+        .auto-animated .container-center-horizontal {
+            opacity: 1;
+        }
+
+        .overlay-base {
+            display: none;
+            height: 100%;
+            opacity: 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        .overlay-base.animate-appear {
+            align-items: center;
+            animation: reveal 0.3s ease-in-out 1 normal forwards;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+        }
+
+        .overlay-base.animate-disappear {
+            animation: reveal 0.3s ease-in-out 1 reverse forwards;
+            display: block;
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        .overlay-base.animate-disappear * {
+            pointer-events: none;
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        .animate-nodelay {
+            animation-delay: 0s;
+        }
+
+        .align-self-flex-start {
+            align-self: flex-start;
+        }
+
+        .align-self-flex-end {
+            align-self: flex-end;
+        }
+
+        .align-self-flex-center {
+            align-self: flex-center;
+        }
+
+        .valign-text-middle {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .valign-text-bottom {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        .listeners-active,
+        .listeners-active * {
+            pointer-events: auto;
+        }
+
+        .hidden,
+        .hidden * {
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .smart-layers-pointers,
+        .smart-layers-pointers * {
+            pointer-events: auto;
+            visibility: visible;
+        }
+
+        .listeners-active-click,
+        .listeners-active-click * {
+            cursor: pointer;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --basegray-200: #bebed4;
+            --basegray-400: #7e7e97;
+            --basegray-600: #1e1e29;
+            --basegray-900: #131319;
+            --black: #000000;
+
+            --font-size-l: 32px;
+            --font-size-m: 20px;
+            --font-size-s: 16px;
+
+            --font-family-nunito: "Nunito", Helvetica;
+        }
+
+        .heading-lg {
+            font-family: var(--font-family-nunito);
+            font-size: var(--font-size-l);
+            font-style: normal;
+            font-weight: 700;
+            letter-spacing: 0px;
+        }
+
+        .text-lg {
+            font-family: var(--font-family-nunito);
+            font-size: var(--font-size-m);
+            font-style: normal;
+            font-weight: 400;
+            letter-spacing: 0px;
+        }
+
+        .text-md {
+            font-family: var(--font-family-nunito);
+            font-size: var(--font-size-s);
+            font-style: normal;
+            font-weight: 400;
+            letter-spacing: 0px;
+        }
+
+        /* screen - desktop-busca */
+
+        .desktop-busca {
+            background-color: var(--basegray-900);
+            height: 768px;
+            overflow: hidden;
+            overflow-x: hidden;
+            position: relative;
+            width: 1366px;
+        }
+
+        .desktop-busca .background-t7Iv3x {
+            background-color: transparent;
+            height: 768px;
+            left: 0px;
+            object-fit: cover;
+            position: absolute;
+            top: 0px;
+            width: 1366px;
+        }
+
+        .desktop-busca .welcome-t7Iv3x {
+            align-items: center;
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 56px;
+            left: 431px;
+            position: absolute;
+            top: 240px;
+            width: 504px;
+        }
+
+        .desktop-busca .title-62Sxx5 {
+            align-items: center;
+            display: flex;
+            flex: 0 0 auto;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .desktop-busca .title-8tRpcz {
+            color: transparent;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 44.8px;
+            margin-top: -1.00px;
+            text-align: center;
+        }
+
+        .desktop-busca .span0-2wsbp9 {
+            color: #f9f9f9;
+            font-style: normal;
+        }
+
+        .desktop-busca .span1-2wsbp9 {
+            color: #8fb2f5;
+            font-style: normal;
+        }
+
+        .desktop-busca .escolha-um-local-par-8tRpcz {
+            align-self: stretch;
+            background-color: transparent;
+            color: var(--basegray-200);
+            font-style: normal;
+            font-weight: 400;
+            line-height: 28.0px;
+            position: relative;
+            text-align: center;
+        }
+
+        .desktop-busca .text-field-62Sxx5 {
+            align-items: center;
+            align-self: stretch;
+            background-color: var(--basegray-600);
+            border-radius: 8px;
+            display: flex;
+            height: 56px;
+            justify-content: center;
+            padding: 0px 20px;
+            position: relative;
+            width: 100%;
+        }
+
+        .desktop-busca .buscar-local-1xPjDa {
+            background-color: transparent;
+            color: var(--basegray-400);
+            flex: 1;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 22.4px;
+            position: relative;
+            text-align: left;
+        }
+
+        .desktop-busca .logo-t7Iv3x {
+            background-color: transparent;
+            height: 32px;
+            left: 590px;
+            position: absolute;
+            top: 48px;
+            width: 186px;
+        }
+
+        .desktop-busca .title {
+            align-self: stretch;
+            background-color: transparent;
+            position: relative;
+        }
+
+        .input-group2 {
+            position: relative;
+            padding: 0;
+            background: var(--basegray-600);
+            backdrop-filter: blur(25px);
+            border-radius: 6.4px;
+        }
+
+        .color:focus {
+            color: #a9a9a9;
+        }
+
+
+        .location-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: transparent;
+            color: #f9f9f9;
+            border: none;
+            border-radius: 30%;
+            padding: 13px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+
+        }
+
+        .location-button:hover {
+            background-color: #007bff8d;
+
+            transform: translateY(-50%) scale(1.2);
+
+            color: #ffffff;
+
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+
+        }
+
+        .location-button i {
+            pointer-events: none;
+
+        }
+
+        #historyCanvas {
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 1rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #historyCanvas h5 {
+            color: #fff;
+        }
+
+        #historyList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #historyList li {
+            padding: 0.5rem;
+            border-bottom: 1px solid #444;
+        }
+
+        #historyList li:last-child {
+            border-bottom: none;
+        }
+
+        #clearButton {
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body style="margin: 0;background: #131319;"><input type="hidden" id="anPageName" name="page" value="desktop-busca">
+
+
+    <div class="container-center-horizontal">
+        <div class="desktop-busca screen " data-id="1:55">
+            <img class="background-t7Iv3x" src="assets/media/bg/bg.png" alt="">
+            <div class="welcome-t7Iv3x" data-id="1:57">
+
+                <div class="title-62Sxx5 title" data-id="1:58">
+                    <h1 class="title-8tRpcz valign-text-middle title heading-lg" data-id="1:59">
+                        <span>
+                            <span class="span0-2wsbp9 heading-lg" style="display: inline-block;">Welcome to </span>
+                            <span class="span1-2wsbp9 heading-lg" style="display: inline-block;">hunderPro</span>
+                        </span>
+                    </h1>
+                    <p class="escolha-um-local-par-8tRpcz valign-text-middle text-lg" data-id="1:60">Choose a location
+                        to see the weather forecast</p>
+                </div>
+                <div class="text-field-62Sxx5" data-id="1:61">
+                    <div class="buscar-local-1xPjDa valign-text-middle text-md" data-id="I1:61;314:1753">
+                        <div class="input-group2">
+                            <div class="autocomplete">
+                                <div class="search-view" data-search-view>
+                                    <div class="search-wrapper">
+                                        <div class="input-container">
+                                            <input type="text" placeholder="Enter city" id="userInput"
+                                                class="form-control color search" data-search-field>
+                                            <button class="location-button" >
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div id="historyCanvas" class="view-list">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div></div>
+                                            <button id="clearButton" class="float-right">Supprimer</button>
+                                        </div>
+                                        <ul id="historyList" class=""></ul>
+
+                                    </div>
+                                    <div class="search-result" data-search-result>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/vendor/jquery-3.6.3.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src="assets/js/timeline.js"></script>
+    <script type="module" src="assets/js/app2.js"></script>
+    <script src="assets/js/vendor/smooth-scroll595e.js"></script>
+
+</body>
+
+</html>

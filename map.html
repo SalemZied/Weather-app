@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+            shrink-to-fit=no">
+    <meta name="description" content="Bytez HTML5 Template">
+
+    <title>Thunder Pro Weather Forcast And News Template </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/media/favicon-light.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+    <!-- All CSS files -->
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/font-awesome.css">
+    <link rel="stylesheet" href="assets/css/vendor/slick.css">
+    <link rel="stylesheet" href="assets/css/vendor/slick-theme.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-266165434-1"></script>
+
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
+
+    <script>
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-266165434-1');
+
+    </script>
+    <style>
+        #windy {
+            width: 100%;
+            height: 350px;
+        }
+
+        #windy #logo-wrapper #logo {
+            left: 80px;
+            display: none
+        }
+
+        :root {
+
+            --bg-Yellow: #FFAD51;
+            --surface: #1d1c1f;
+            --bg-White: #ffffff;
+            --black-alpha-10: hsla(0, 0%, 0%, 0.1);
+
+            --gradient-1: linear-gradient(180deg,
+                    hsla(270, 5%, 7%, 0) 0%,
+                    hsla(270, 5%, 7%, 0.8) 65%,
+                    hsl(270, 5%, 7%) 100%);
+            --gradient-2: linear-gradient(180deg,
+                    hsla(260, 5%, 12%, 0) 0%,
+                    hsla(260, 5%, 12%, 0.8) 65%,
+                    hsl(260, 5%, 12%) 100%);
+
+            --ff-nunito-sans: "Nunito Sans", sans-serif;
+            --heading-1: 70px;
+            --heading-2: 50px;
+            --title-1: 30px;
+            --title-2: 1em;
+            --title-3: 20px;
+            --body-1: 70px;
+            --body-2: 50px;
+            --body-3: 30px;
+            --label-1: 20px;
+            --label-2: 20px;
+            --weight-regular: 400;
+            --weight-semiBold: 600;
+
+            --shadow-1: 0px 1px 3px hsla(0, 0%, 0%, 0.5);
+            --shadow-2: 0px 3px 6px hsla(0, 0%, 0%, 0.4);
+
+            --radius-28: 28px;
+            --radius-16: 16px;
+            --radius-pill: 500px;
+            --radius-circle: 50%;
+
+            --transition-short: 100ms ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--on-primary);
+            height: 48px;
+            line-height: 48px;
+            max-width: -webkit-max-content;
+            max-width: -moz-max-content;
+            max-width: max-content;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-inline: 16px;
+            border-radius: var(--radius-pill);
+        }
+
+        .btn-primary .span {
+            font-weight: var(--weight-semiBold);
+        }
+
+        .btn-primary[disabled] {
+            background-color: var(--outline);
+            color: var(--on-surface-variant);
+            cursor: not-allowed;
+        }
+
+        .btn-primary[disabled]::before {
+            display: none;
+        }
+
+        .card {
+            background-color: var(--surface);
+            color: var(--on-surface);
+        }
+
+        .card-lg {
+            border-radius: var(--radius-28);
+            padding: 20px;
+        }
+
+        .card-sm {
+            border-radius: var(--radius-16);
+            padding: 16px;
+        }
+
+        .heading-1 {
+            color: var(--white);
+            font-size: var(--heading-1);
+            line-height: 1.1;
+        }
+
+        .heading-2 {
+            font-size: var(--heading-2);
+            line-height: 1.1;
+        }
+
+        .title-1 {
+            font-size: var(--title-1);
+        }
+
+        .title-2 {
+            font-size: var(--title-2);
+            -webkit-margin-after: 12px;
+            margin-block-end: 12px;
+        }
+
+        .title-3 {
+            font-size: var(--title-3);
+            font-weight: var(--weight-semiBold);
+        }
+
+        .body-1 {
+            font-size: var(--body-1);
+        }
+
+        .body-2 {
+            font-size: var(--body-2);
+            font-weight: var(--weight-semiBold);
+        }
+
+        .body-3 {
+            font-size: var(--body-3);
+        }
+
+        .label-1 {
+            font-size: var(--label-1);
+        }
+
+        .label-2 {
+            font-size: var(--label-2);
+        }
+
+        .fade-in {
+            -webkit-animation: fade-in 250ms ease forwards;
+            animation: fade-in 250ms ease forwards;
+        }
+
+        @-webkit-keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* header */
+
+        .header .btn-primary .span {
+            display: none;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        .header .container,
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .container {
+            justify-content: space-between;
+        }
+
+        .header-actions {
+            gap: 16px;
+        }
+
+        .header .btn-primary {
+            padding-inline: 12px;
+        }
+
+        .search-view {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* width: 100vh; */
+            /* width: 100svh; */
+            background-color: var(--surface);
+            color: var(--on-surface);
+            -webkit-clip-path: circle(4% at calc(100% - 102px) 5%);
+            clip-path: circle(4% at calc(100% - 102px) 5%);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 4;
+            transition: -webkit-clip-path 500ms ease;
+            transition: clip-path 500ms ease;
+            transition: clip-path 500ms ease, -webkit-clip-path 500ms ease;
+        }
+
+        .search-view.active {
+            opacity: 1;
+            visibility: visible;
+            -webkit-clip-path: circle(130% at 73% 5%);
+            clip-path: circle(130% at 73% 5%);
+            height: 100%;
+        }
+
+        .search-wrapper {
+            position: relative;
+            -webkit-border-after: 1px solid var(--outline);
+            border-block-end: 1px solid var(--outline);
+        }
+
+        .search-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--on-surface);
+            border-block-start-color: transparent;
+            border-radius: var(--radius-circle);
+            -webkit-animation: loading 250ms linear infinite;
+            animation: loading 250ms linear infinite;
+            transform: translateY(-50%);
+            display: none;
+        }
+
+        @-webkit-keyframes loading {
+            0% {
+                transform: translateY(-50%) rotate(0);
+            }
+
+            100% {
+                transform: translateY(-50%) rotate(1turn);
+            }
+        }
+
+        @keyframes loading {
+            0% {
+                transform: translateY(-50%) rotate(0);
+            }
+
+            100% {
+                transform: translateY(-50%) rotate(1turn);
+            }
+        }
+
+        .search-wrapper:has(.searching)::before {
+            display: block;
+        }
+
+        .search-field {
+            height: 80px;
+            line-height: 80px;
+            padding-inline: 56px 16px;
+            outline: none;
+        }
+
+        .search-field::-webkit-input-placeholder {
+            color: var(--on-surface-variant-2);
+        }
+
+        .search-field::-moz-placeholder {
+            color: var(--on-surface-variant-2);
+        }
+
+        .search-field:-ms-input-placeholder {
+            color: var(--on-surface-variant-2);
+        }
+
+        .search-field::-ms-input-placeholder {
+            color: var(--on-surface-variant-2);
+        }
+
+        .search-field::placeholder {
+            color: var(--on-surface-variant-2);
+        }
+
+        .search-field::-webkit-search-cancel-button {
+            display: none;
+        }
+
+        .search-wrapper .leading-icon {
+            position: absolute;
+            top: 50%;
+            left: 28px;
+            transform: translate(-50%, -50%);
+        }
+
+        .search-wrapper>.m-icon {
+            display: none;
+        }
+
+        .search-wrapper .icon-btn {
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        .search-view .view-list {
+            padding-block: 8px 16px;
+        }
+
+        .view-item .m-icon,
+        .item-subtitle {
+            color: var(--on-surface-variant);
+        }
+
+        .search-view .view-item {
+            position: relative;
+            height: 56px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 16px;
+            padding-inline: 16px 24px;
+        }
+
+        .search-view .view-item:is(.m-icon, .item-subtitle) {
+            color: var(--on-surface-variant);
+        }
+
+        .search-view .view-item .item-link {
+            position: absolute;
+            inset: 0;
+            box-shadow: none;
+        }
+
+        /* main */
+
+        main {
+            height: calc(100vh - 80px);
+            height: calc(100svh - 80px);
+            /* overflow: hidden; */
+        }
+
+        article.container {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 20px;
+        }
+
+        article.container::-webkit-scrollbar-thumb {
+            background-color: transparent;
+        }
+
+        article.container:is(:hover, :focus-within)::-webkit-scrollbar-thumb {
+            background-color: var(--white-alpha-8);
+        }
+
+        article.container::-webkit-scrollbar-thumb {
+            height: 10px;
+        }
+
+        article.container::before {
+            content: "";
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background-image: var(--gradient-1);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .section:not(:last-child) {
+            -webkit-margin-after: 16px;
+            margin-block-end: 16px;
+        }
+
+        /* current-weather-card */
+        .current-weather-card .weapper {
+            margin-block: 12px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .current-weather-card .weather-icon {
+            margin-inline: auto;
+        }
+
+        .current-weather-card>.body-3 {
+            text-transform: capitalize;
+        }
+
+        .current-weather-card .meta-list {
+            -webkit-margin-before: 16px;
+            margin-block-start: 16px;
+            -webkit-padding-before: 16px;
+            padding-block-start: 16px;
+            -webkit-border-before: 1px solid var(--outline);
+            border-block-start: 1px solid var(--outline);
+        }
+
+        .current-weather-card .meta-item {
+            display: flex;
+            gap: 8px;
+        }
+
+        .current-weather-card .meta-item:not(:last-child) {
+            -webkit-margin-after: 12px;
+            margin-block-end: 12px;
+        }
+
+        .current-weather-card .meta-text {
+            color: var(--on-surface-variant);
+        }
+
+        /* highlights */
+
+        .forecast-card .title-2 {
+            -webkit-margin-after: 0;
+            margin-block-end: 0;
+        }
+
+        .forecast-card :is(.card-item, .icon-wrapper) {
+            display: flex;
+            align-items: center;
+        }
+
+        .forecast-card .card-item:not(:last-child) {
+            -webkit-margin-after: 12px;
+            margin-block-end: 12px;
+        }
+
+        .forecast-card .icon-wrapper {
+            gap: 8px;
+        }
+
+        .forecast-card .label-1 {
+            color: var(--on-surface-variant);
+            font-weight: var(--weight-semiBold);
+        }
+
+        .forecast-card .card-item>.label-1 {
+            width: 100%;
+            text-align: right;
+        }
+
+        /* highlights */
+
+        .highlights .m-icon {
+            font-size: 3.2rem;
+        }
+
+        .highlight-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .highlight-list .title-3 {
+            -webkit-margin-after: 20px;
+            margin-block-end: 20px;
+        }
+
+        .highlights .card-sm {
+            background-color: var(--black-alpha-10);
+            position: relative;
+        }
+
+        .highlight-card :is(.wrapper, .card-list, .card-item) {
+            display: flex;
+            align-items: center;
+        }
+
+        .highlight-card .wrapper {
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .highlight-card .card-list {
+            flex-wrap: wrap;
+            flex-grow: 1;
+            row-gap: 8px;
+        }
+
+        .highlight-card .card-item {
+            width: 50%;
+            justify-content: flex-end;
+            gap: 4px;
+        }
+
+        .highlight-card .label-1 {
+            color: var(--on-surface-variant);
+        }
+
+        .badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 2px 12px;
+            border-radius: var(--radius-pill);
+            font-weight: var(--weight-semiBold);
+            cursor: help;
+        }
+
+        .badge.aqi-1 {
+            background-color: var(--bg-Yellow);
+            color: var(--bg-White);
+        }
+
+        .badge.aqi-2 {
+            background-color: var(--bg-aqi-2);
+            color: var(--on-bg-aqi-2);
+        }
+
+        .badge.aqi-3 {
+            background-color: var(--bg-aqi-3);
+            color: var(--on-bg-aqi-3);
+        }
+
+        .badge.aqi-4 {
+            background-color: var(--bg-aqi-4);
+            color: var(--on-bg-aqi-4);
+        }
+
+        .badge.aqi-5 {
+            background-color: var(--bg-aqi-5);
+            color: var(--on-bg-aqi-5);
+        }
+
+
+
+        .highlight-card.two .label-1 {
+            -webkit-margin-after: 4px;
+            margin-block-end: 4px;
+        }
+
+        .card-item {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            place-items: center;
+            margin-bottom: 15px;
+        }
+
+        /* hourly forecast */
+
+        .slider-container {
+            overflow-x: auto;
+            margin-inline: -16px;
+        }
+
+        .slider-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slider-list {
+            display: flex;
+            gap: 12px;
+        }
+
+        .slider-list:first-child {
+            -webkit-margin-after: 16px;
+            margin-block-end: 16px;
+        }
+
+        .slider-list::before,
+        .slider-list::after {
+            content: "";
+            min-width: 4px;
+        }
+
+        .slider-item {
+            min-width: 110px;
+            flex: 1 1 100%;
+        }
+
+        .slider-card {
+            text-align: center;
+        }
+
+        .slider-item .weather-icon {
+            margin-inline: auto;
+            margin-block: 12px;
+        }
+
+        /* footer */
+
+        .footer,
+        footer .body-3:last-child {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .footer {
+            color: var(--on-surface-variant);
+            text-align: center;
+            gap: 12px 24px;
+            -webkit-margin-before: 28px;
+            margin-block-start: 28px;
+        }
+
+        .fade-in .footer {
+            display: flex;
+        }
+
+        .footer .body-3:last-child {
+            gap: 6px;
+        }
+
+        .footer a {
+            display: inline;
+        }
+
+        .footer p:last-child {
+            display: inline;
+        }
+
+        /* loading */
+
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background);
+            place-items: center;
+            z-index: 1;
+            overflow: hidden;
+            display: none;
+        }
+
+        .loading::before {
+            content: "";
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--on-background);
+            border-block-start-color: transparent;
+            border-radius: var(--radius-circle);
+            -webkit-animation: loading 500ms linear infinite;
+            animation: loading 500ms linear infinite;
+            position: fixed;
+            top: 50%;
+        }
+
+        /* ERROR */
+
+        .error-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            height: 100svh;
+            background-color: var(--background);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 8;
+            display: none;
+        }
+
+        .error-content .btn-primary {
+            -webkit-margin-before: 20px;
+            margin-block-start: 20px;
+        }
+
+        /* media queries */
+
+        @media (min-width: 768px) {
+
+            /* reused */
+
+            .title-1 {
+                --title-1: 2.4rem;
+            }
+
+            .section>.title-2 {
+                -webkit-margin-after: 16px;
+                margin-block-end: 16px;
+            }
+
+            .card-lg {
+                padding: 24px;
+            }
+
+            .card-sm {
+                padding: 20px;
+                display: grid;
+                /* grid-template-columns: min-content 1fr; */
+            }
+
+            .badge {
+                top: 20px;
+                right: 20px;
+            }
+
+            /* header */
+
+            .header-actions {
+                gap: 24px;
+            }
+
+            .header .btn-primary {
+                padding-inline: 16px 24px;
+            }
+
+            .header .btn-primary .span {
+                display: block;
+            }
+
+            .search-view {
+                -webkit-clip-path: circle(3% at calc(100% - 273px) 6%);
+                clip-path: circle(3% at calc(100% - 273px) 6%);
+            }
+
+            /* main */
+
+            main {
+                height: calc(100vh - 96px);
+                height: calc(100svh - 96px);
+            }
+
+            article.container {
+                -webkit-padding-before: 0;
+                padding-block-start: 0;
+                grid-template-columns: 280px minmax(0, 1fr);
+                align-items: flex-start;
+                gap: 24px;
+            }
+
+            .content-left {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 0;
+            }
+
+            .section:not(:last-child) {
+                margin-block: 20px;
+            }
+
+            .forecast-card .card-item:not(:last-child) {
+                -webkit-margin-after: 16px;
+                margin-block-end: 16px;
+            }
+
+            .highlight-list {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .highlight-card:nth-child(-n + 2) {
+                grid-column: span 2;
+                height: 160px;
+            }
+
+            .highlight-card:nth-child(n + 3) {
+                height: 120px;
+            }
+
+            .highlights .m-icon {
+                font-size: 3.6rem;
+            }
+
+            .highlight-card.one .card-item {
+                width: 25%;
+                flex-direction: column-reverse;
+                gap: 8px;
+            }
+
+            .slider-container {
+                margin-inline: 0 -24px;
+                border-bottom-left-radius: var(--radius-16);
+                border-top-left-radius: var(--radius-16);
+            }
+
+            .slider-container::before {
+                display: none;
+            }
+
+            .slider-container::after {
+                min-width: 12px;
+            }
+
+            .hourly-forecast .card-sm {
+                padding: 16px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            :root {
+                --headign: 8rem;
+                --title-2: 2rem;
+            }
+
+            .title-1 {
+                --title-1: 2.6rem;
+            }
+
+            .card-lg {
+                padding: 36px;
+            }
+
+            .card-sm {
+                padding: 24px;
+            }
+
+            .highlight-card.two .card-item {
+                -moz-column-gap: 24px;
+                column-gap: 24px;
+            }
+
+            /* header */
+
+            .header .icon-btn {
+                display: none;
+            }
+
+            .logo img {
+                width: 200px;
+            }
+
+
+            .header .container {
+                padding-block: 0;
+                height: 100%;
+            }
+
+            .header .btn-primary {
+                padding-inline: 16px 24px;
+            }
+
+            .header .btn-primary .span {
+                display: block;
+            }
+
+            .search-view,
+            .search-view.active {
+                all: unset;
+                display: block;
+                position: relative;
+                width: 500px;
+                -webkit-animation: none;
+                animation: none;
+            }
+
+            .search-wrapper {
+                -webkit-border-after: none;
+                border-block-end: none;
+            }
+
+            .search-wrapper>.m-icon {
+                display: block;
+            }
+
+            .search-field,
+            .search-view .view-list {
+                background-color: var(--surface);
+            }
+
+            .search-field {
+                height: 56px;
+                border-radius: var(--radius-28);
+            }
+
+            .search-result,
+            .search-view:not(:focus-within) .search-result {
+                display: none;
+            }
+
+            .search-result,
+            .search-view:not(:focus-within) .search-result.active {
+                display: block;
+            }
+
+            .search-view:has(.search-result):focus-within .search-field {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            .search-view .view-list {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                max-height: 360px;
+                border-radius: 0 0 var(--radius-28) var(--radius-28);
+                -webkit-border-before: 1px solid var(--outline);
+                border-block-start: 1px solid var(--outline);
+                overflow-y: auto;
+                overflow-y: overlay;
+            }
+
+            .search-view .view-list:empty {
+                min-height: 120px;
+            }
+
+            .search-view .view-list::-webkit-scrollbar-button {
+                height: 20px;
+            }
+
+            .search-view:is(:hover, :has(.view-list):hover) {
+                -webkit-filter: drop-shadow(var(--shadow-1));
+                filter: drop-shadow(var(--shadow-1));
+            }
+
+            .search-view:is(:focus-within, :has(.view-list):focus-within) {
+                -webkit-filter: drop-shadow(var(--shadow-2));
+                filter: drop-shadow(var(--shadow-2));
+            }
+
+            /* main */
+
+            main {
+                height: calc(100vh - 120px);
+                height: calc(100svh - 120px);
+            }
+
+            article.container {
+                -webkit-padding-before: 0;
+                padding-block-start: 0;
+                grid-template-columns: 360px minmax(0, 1fr);
+                gap: 40px;
+            }
+
+            .current-weather .weather-icon {
+                width: 120px;
+            }
+
+            .forecast-card .title-2 {
+                --title-2: 2.2rem;
+            }
+
+            .highlight-card:nth-child(-n + 2) {
+                height: 200px;
+            }
+
+            .highlight-card:nth-child(n + 3) {
+                height: 150px;
+            }
+
+            .highlight-card .m-icon {
+                font-size: 4rem;
+            }
+
+            .slider-list {
+                gap: 16px;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .highlight-list {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader" style="opacity: 1; ">
+            <svg version="1.1" id="sun" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10"
+                xml:space="preserve" style="opacity: 1; margin-left: 0px; margin-top: 0px;">
+                <g>
+                    <path fill="none"
+                        d="M6.942,3.876c-0.4-0.692-1.146-1.123-1.946-1.123c-0.392,0-0.779,0.104-1.121,0.301c-1.072,0.619-1.44,1.994-0.821,3.067C3.454,6.815,4.2,7.245,5,7.245c0.392,0,0.779-0.104,1.121-0.301C6.64,6.644,7.013,6.159,7.167,5.581C7.321,5,7.243,4.396,6.942,3.876z
+                            M6.88,5.505C6.745,6.007,6.423,6.427,5.973,6.688C5.676,6.858,5.34,6.948,5,6.948c-0.695,0-1.343-0.373-1.69-0.975C2.774,5.043,3.093,3.849,4.024,3.312C4.32,3.14,4.656,3.05,4.996,3.05c0.695,0,1.342,0.374,1.69,0.975C6.946,4.476,7.015,5,6.88,5.505z">
+                    </path>
+                    <path fill="none"
+                        d="M8.759,2.828C8.718,2.757,8.626,2.732,8.556,2.774L7.345,3.473c-0.07,0.041-0.094,0.132-0.053,0.202C7.319,3.723,7.368,3.75,7.419,3.75c0.025,0,0.053-0.007,0.074-0.02l1.211-0.699C8.774,2.989,8.8,2.899,8.759,2.828z">
+                    </path>
+                    <path fill="none"
+                        d="M1.238,7.171c0.027,0.047,0.077,0.074,0.128,0.074c0.025,0,0.051-0.008,0.074-0.02l1.211-0.699c0.071-0.041,0.095-0.133,0.054-0.203S2.574,6.228,2.503,6.269l-1.21,0.699C1.221,7.009,1.197,7.101,1.238,7.171z">
+                    </path>
+                    <path fill="none"
+                        d="M6.396,2.726c0.052,0,0.102-0.026,0.13-0.075l0.349-0.605C6.915,1.976,6.89,1.885,6.819,1.844c-0.07-0.042-0.162-0.017-0.202,0.054L6.269,2.503C6.228,2.574,6.251,2.666,6.322,2.706C6.346,2.719,6.371,2.726,6.396,2.726z">
+                    </path>
+                    <path fill="none"
+                        d="M3.472,7.347L3.123,7.952c-0.041,0.07-0.017,0.162,0.054,0.203C3.2,8.169,3.226,8.175,3.25,8.175c0.052,0,0.102-0.027,0.129-0.074l0.349-0.605c0.041-0.07,0.017-0.16-0.054-0.203C3.603,7.251,3.513,7.276,3.472,7.347z">
+                    </path>
+                    <path fill="none"
+                        d="M3.601,2.726c0.025,0,0.051-0.007,0.074-0.02C3.746,2.666,3.77,2.574,3.729,2.503l-0.35-0.604C3.338,1.828,3.248,1.804,3.177,1.844C3.106,1.886,3.082,1.976,3.123,2.047l0.35,0.604C3.5,2.7,3.549,2.726,3.601,2.726z">
+                    </path>
+                    <path fill="none"
+                        d="M6.321,7.292c-0.07,0.043-0.094,0.133-0.054,0.203l0.351,0.605c0.026,0.047,0.076,0.074,0.127,0.074c0.025,0,0.051-0.006,0.074-0.02c0.072-0.041,0.096-0.133,0.055-0.203l-0.35-0.605C6.483,7.276,6.393,7.253,6.321,7.292z">
+                    </path>
+                    <path fill="none"
+                        d="M2.202,5.146c0.082,0,0.149-0.065,0.149-0.147S2.284,4.851,2.202,4.851H1.503c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147H2.202z">
+                    </path>
+                    <path fill="none"
+                        d="M8.493,4.851H7.794c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147l0,0h0.699c0.082,0,0.148-0.065,0.148-0.147S8.575,4.851,8.493,4.851L8.493,4.851z">
+                    </path>
+                    <path fill="none"
+                        d="M5.146,2.203V0.805c0-0.082-0.066-0.148-0.148-0.148c-0.082,0-0.148,0.066-0.148,0.148v1.398c0,0.082,0.066,0.149,0.148,0.149C5.08,2.352,5.146,2.285,5.146,2.203z">
+                    </path>
+                    <path fill="none"
+                        d="M4.85,7.796v1.396c0,0.082,0.066,0.15,0.148,0.15c0.082,0,0.148-0.068,0.148-0.15V7.796c0-0.082-0.066-0.148-0.148-0.148C4.917,7.647,4.85,7.714,4.85,7.796z">
+                    </path>
+                    <path fill="none"
+                        d="M2.651,3.473L1.44,2.774C1.369,2.732,1.279,2.757,1.238,2.828C1.197,2.899,1.221,2.989,1.292,3.031l1.21,0.699c0.023,0.013,0.049,0.02,0.074,0.02c0.051,0,0.101-0.026,0.129-0.075C2.747,3.604,2.722,3.514,2.651,3.473z">
+                    </path>
+                    <path fill="none"
+                        d="M8.704,6.968L7.493,6.269c-0.07-0.041-0.162-0.016-0.201,0.055c-0.041,0.07-0.018,0.162,0.053,0.203l1.211,0.699c0.023,0.012,0.049,0.02,0.074,0.02c0.051,0,0.102-0.027,0.129-0.074C8.8,7.101,8.776,7.009,8.704,6.968z">
+                    </path>
+                </g>
+            </svg>
+
+            <svg version="1.1" id="cloud" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10"
+                xml:space="preserve">
+                <path fill="none"
+                    d="M8.528,5.624H8.247c-0.085,0-0.156-0.068-0.156-0.154c0-0.694-0.563-1.257-1.257-1.257c-0.098,0-0.197,0.013-0.3,0.038C6.493,4.259,6.45,4.252,6.415,4.229C6.38,4.208,6.356,4.172,6.348,4.131C6.117,3.032,5.135,2.235,4.01,2.235c-1.252,0-2.297,0.979-2.379,2.23c-0.004,0.056-0.039,0.108-0.093,0.13C1.076,4.793,0.776,5.249,0.776,5.752c0,0.693,0.564,1.257,1.257,1.257h6.495c0.383,0,0.695-0.31,0.695-0.692S8.911,5.624,8.528,5.624z">
+                </path>
+            </svg>
+
+            <div class="rain">
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Back To Top Start -->
+    <a href="#main-wrapper" id="backto-top" class="back-to-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!-- Main Wrapper Start -->
+    <div id="main-wrapper" class="main-wrapper overflow-hidden">
+
+
+        <!-- inner banner Start -->
+        <section class="inner-slider ">
+
+            <!-- Header Area Start -->
+            <div class="header ">
+                <nav class="navbar navbar-light fixed-top m-3 " style="background-color: transparent;">
+                    <div class="container-fluid">
+                        <a class="navbar-brand light-logo" href="accueil.html"><img alt=""
+                                src="assets/media/logo-dark.png"></a>
+                        <a class="navbar-brand dark-logo" href="accueil.html"><img alt=""
+                                src="assets/media/logo-light.png"></a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                            aria-labelledby="offcanvasNavbarLabel">
+                            <div class="offcanvas-header">
+                                <a class="navbar-brand light-logo" href="#"><img alt=""
+                                        src="assets/media/logo-dark.png"></a>
+                                <a class="navbar-brand dark-logo" href="#"><img alt=""
+                                        src="assets/media/logo-light.png"></a>
+                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3" style="text-align:left">
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" aria-current="page" href="index.html">Home</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link active" aria-current="page" href="map.html">weather detail</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="news.html">News</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="weather-map.html">weather map</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="contact.html">Contact</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="gallery.html">Gallery</a>
+                                    </li>
+                                    <li
+                                        class="nav-item color-mode d-flex align-items-center justify-content-between py-2">
+                                        <p class="nav-link mb-0 mt-0 active col-4">Dark Mode</p>
+                                        <label class="switch col-4">
+                                            <input type="checkbox" id="changeColor">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                                <form class="d-flex py-5">
+                                    <input class="form-control me-2" type="search" placeholder="Search"
+                                        aria-label="Search">
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!-- Header Area end -->
+            <div class="container">
+                <h2 class="title">Weather details</h2>
+            </div>
+            <div class="clouds">
+                <div class="clouds-1"></div>
+                <div class="clouds-2"></div>
+                <div class="clouds-3"></div>
+            </div>
+        </section>
+
+
+        <!-- inner banner End -->
+        <section class="section current-weather" aria-label="current weather" data-current-weather></section>
+        <section class="global pt-100">
+            <div class="container">
+                <div class="title text-center">
+                    <h2 class="fw-5 fs-40 lh-120 ls-5 color-dark mb-16">Global Weather Highlights</h2>
+                    <p class="fw-4 fs-16 lh-160 ls-2 color-gray mb-48">Global Weather Highlights provides a forecast for
+                        various regions worldwide. Stay informed about weather <br> conditions in different parts of the
+                        world.</p>
+                </div>
+                <section class="section highlights" aria-labelledby="highlights-lable" data-highlights></section>
+            </div>
+        </section>
+
+
+        <!-- Map area start -->
+        <section class="map st-2 p-100 ">
+            <div class="container">
+                <div class="title">
+                    <div class="title text-center">
+                        <h2 class="fw-5 fs-40 lh-120 ls-5 color-dark mb-16">Weather map</h2>
+                        <p class="fw-4 fs-16 lh-160 ls-2 color-gray mb-48">Explorez les conditions météorologiques
+                            actuelles à travers le
+                            monde avec notre carte interactive. Obtenez des prévisions<br> détaillées sur la
+                            température,
+                            les précipitations et d'autres éléments météorologiques</p>
+                    </div>
+                    <div class="mb-32 fullSize-map">
+                        <div id="windy" style="width: 100%; height: 600px;"></div>
+
+                    </div>
+                </div>
+
+            </div>
+    </div>
+    </section>
+    <!-- Map area End -->
+
+    <section class="map st-2 p-100 ">
+        <div class="container">
+            <div class="title">
+                <div class="title text-center">
+                    <h2 class="fw-5 fs-40 lh-120 ls-5 color-dark mb-16">Weather map</h2>
+                    <p class="fw-4 fs-16 lh-160 ls-2 color-gray mb-48">Explorez les conditions météorologiques
+                        actuelles à travers le
+                        monde avec notre carte interactive. Obtenez des prévisions<br> détaillées sur la
+                        température,
+                        les précipitations et d'autres éléments météorologiques</p>
+                </div>
+                <main>
+                    <article class="container" data-container>
+                        <div class="" style="padding-top: 1.3em">
+                            <!-- forecast -->
+                            <section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast>
+                            </section>
+                        </div>
+                        <div class="content-right">
+                            <!-- highlight -->
+                            <section class="section highlights" aria-labelledby="highlights-lable" data-highlights>
+                            </section>
+                            <section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast>
+                            </section>
+                        </div>
+                        <div class="loading" data-loading>
+                        </div>
+
+                    </article>
+                </main>
+
+                <div class="today-chart text-white mt-4 main-shadow p-4">
+                    <h2 class="fw-bold position-relative color-dark">Next 24h Temp Chart</h2>
+                    <canvas id="today-chart" class="mt-4 p-4 rounded-4"
+                        style="background-color:var(--black-alpha-10); box-shadow: 0 0 10px rgb(0 0 0 / 36%)"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer area Start -->
+    <footer class="footer  pt-100 pb-0">
+        <div class="container">
+            <div class="text-center">
+                <a href="index-2.html" class="logo mb-32">
+                    <img src="assets/media/logo-dark.png" class="light" alt="">
+                    <img src="assets/media/logo-light.png" class="dark" alt="">
+                </a>
+                <p class="fw-4 fs-13 lh-120 color-dark-2 mb-32">A weather app that provides accurate and up-to-date
+                    weather <br> information for users.</p>
+                <ul class="icon list-unstyled">
+                    <li>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M9.49467 6.77491L15.323 0H13.9418L8.88114 5.88256L4.83917 0H0.177246L6.28949 8.89547L0.177246 16H1.55844L6.90267 9.78782L11.1713 16H15.8332L9.49433 6.77491H9.49467ZM7.60293 8.97384L6.98364 8.08805L2.0561 1.03974H4.17754L8.15411 6.72795L8.77341 7.61374L13.9425 15.0075H11.8211L7.60293 8.97418V8.97384Z"
+                                    fill="black" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </li>
+                </ul>
+                <ul class="footer-link list-unstyled mb-48">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="news.html" class="">News</a></li>
+                    <li><a href="map.html" class="">Map</a></li>
+                    <li><a href="gallery.html" class="">Pictures</a></li>
+                    <li><a href="weather-map.html">Wheather map</a></li>
+                    <li><a href="contact.html" class="">Contact Us</a></li>
+                </ul>
+                <p class="fw-4 fs-13 color-dark-2 copyright m-0">©2023 WeatherPro, All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer area End -->
+
+
+    </div>
+    <!-- Jquery Js -->
+    <script src="assets/js/vendor/jquery-3.6.3.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src="assets/js/vendor/slick.min.js"></script>
+    <script src="assets/js/vendor/jquery-appear.js"></script>
+    <script src="assets/js/vendor/jquery-validator.js"></script>
+    <script src="assets/js/vendor/chart.js"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyBx5znUcKBusd_FcefWl_ID9clEmJ08utQ"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/js/vendor/smooth-scroll595e.js"></script>
+    <!-- Site Scripts -->
+    <script src="assets/js/app.js"></script>
+    <script type="module" src="assets/js/detail.js"></script>
+    
+
+
+
+
+</body>
+
+
+
+</html>

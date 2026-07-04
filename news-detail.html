@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+            shrink-to-fit=no">
+    <meta name="description" content="Bytez HTML5 Template">
+
+    <title>Thunder Pro Weather Forcast And News Template </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/media/favicon-light.png">
+
+    <!-- All CSS files -->
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/font-awesome.css">
+    <link rel="stylesheet" href="assets/css/vendor/slick.css">
+    <link rel="stylesheet" href="assets/css/vendor/slick-theme.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-266165434-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-266165434-1');
+    </script>
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader" style="opacity: 1; ">
+            <svg version="1.1" id="sun" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10"
+                xml:space="preserve" style="opacity: 1; margin-left: 0px; margin-top: 0px;">
+                <g>
+                    <path fill="none"
+                        d="M6.942,3.876c-0.4-0.692-1.146-1.123-1.946-1.123c-0.392,0-0.779,0.104-1.121,0.301c-1.072,0.619-1.44,1.994-0.821,3.067C3.454,6.815,4.2,7.245,5,7.245c0.392,0,0.779-0.104,1.121-0.301C6.64,6.644,7.013,6.159,7.167,5.581C7.321,5,7.243,4.396,6.942,3.876z
+                            M6.88,5.505C6.745,6.007,6.423,6.427,5.973,6.688C5.676,6.858,5.34,6.948,5,6.948c-0.695,0-1.343-0.373-1.69-0.975C2.774,5.043,3.093,3.849,4.024,3.312C4.32,3.14,4.656,3.05,4.996,3.05c0.695,0,1.342,0.374,1.69,0.975C6.946,4.476,7.015,5,6.88,5.505z">
+                    </path>
+                    <path fill="none"
+                        d="M8.759,2.828C8.718,2.757,8.626,2.732,8.556,2.774L7.345,3.473c-0.07,0.041-0.094,0.132-0.053,0.202C7.319,3.723,7.368,3.75,7.419,3.75c0.025,0,0.053-0.007,0.074-0.02l1.211-0.699C8.774,2.989,8.8,2.899,8.759,2.828z">
+                    </path>
+                    <path fill="none"
+                        d="M1.238,7.171c0.027,0.047,0.077,0.074,0.128,0.074c0.025,0,0.051-0.008,0.074-0.02l1.211-0.699c0.071-0.041,0.095-0.133,0.054-0.203S2.574,6.228,2.503,6.269l-1.21,0.699C1.221,7.009,1.197,7.101,1.238,7.171z">
+                    </path>
+                    <path fill="none"
+                        d="M6.396,2.726c0.052,0,0.102-0.026,0.13-0.075l0.349-0.605C6.915,1.976,6.89,1.885,6.819,1.844c-0.07-0.042-0.162-0.017-0.202,0.054L6.269,2.503C6.228,2.574,6.251,2.666,6.322,2.706C6.346,2.719,6.371,2.726,6.396,2.726z">
+                    </path>
+                    <path fill="none"
+                        d="M3.472,7.347L3.123,7.952c-0.041,0.07-0.017,0.162,0.054,0.203C3.2,8.169,3.226,8.175,3.25,8.175c0.052,0,0.102-0.027,0.129-0.074l0.349-0.605c0.041-0.07,0.017-0.16-0.054-0.203C3.603,7.251,3.513,7.276,3.472,7.347z">
+                    </path>
+                    <path fill="none"
+                        d="M3.601,2.726c0.025,0,0.051-0.007,0.074-0.02C3.746,2.666,3.77,2.574,3.729,2.503l-0.35-0.604C3.338,1.828,3.248,1.804,3.177,1.844C3.106,1.886,3.082,1.976,3.123,2.047l0.35,0.604C3.5,2.7,3.549,2.726,3.601,2.726z">
+                    </path>
+                    <path fill="none"
+                        d="M6.321,7.292c-0.07,0.043-0.094,0.133-0.054,0.203l0.351,0.605c0.026,0.047,0.076,0.074,0.127,0.074c0.025,0,0.051-0.006,0.074-0.02c0.072-0.041,0.096-0.133,0.055-0.203l-0.35-0.605C6.483,7.276,6.393,7.253,6.321,7.292z">
+                    </path>
+                    <path fill="none"
+                        d="M2.202,5.146c0.082,0,0.149-0.065,0.149-0.147S2.284,4.851,2.202,4.851H1.503c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147H2.202z">
+                    </path>
+                    <path fill="none"
+                        d="M8.493,4.851H7.794c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147l0,0h0.699c0.082,0,0.148-0.065,0.148-0.147S8.575,4.851,8.493,4.851L8.493,4.851z">
+                    </path>
+                    <path fill="none"
+                        d="M5.146,2.203V0.805c0-0.082-0.066-0.148-0.148-0.148c-0.082,0-0.148,0.066-0.148,0.148v1.398c0,0.082,0.066,0.149,0.148,0.149C5.08,2.352,5.146,2.285,5.146,2.203z">
+                    </path>
+                    <path fill="none"
+                        d="M4.85,7.796v1.396c0,0.082,0.066,0.15,0.148,0.15c0.082,0,0.148-0.068,0.148-0.15V7.796c0-0.082-0.066-0.148-0.148-0.148C4.917,7.647,4.85,7.714,4.85,7.796z">
+                    </path>
+                    <path fill="none"
+                        d="M2.651,3.473L1.44,2.774C1.369,2.732,1.279,2.757,1.238,2.828C1.197,2.899,1.221,2.989,1.292,3.031l1.21,0.699c0.023,0.013,0.049,0.02,0.074,0.02c0.051,0,0.101-0.026,0.129-0.075C2.747,3.604,2.722,3.514,2.651,3.473z">
+                    </path>
+                    <path fill="none"
+                        d="M8.704,6.968L7.493,6.269c-0.07-0.041-0.162-0.016-0.201,0.055c-0.041,0.07-0.018,0.162,0.053,0.203l1.211,0.699c0.023,0.012,0.049,0.02,0.074,0.02c0.051,0,0.102-0.027,0.129-0.074C8.8,7.101,8.776,7.009,8.704,6.968z">
+                    </path>
+                </g>
+            </svg>
+
+            <svg version="1.1" id="cloud" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10"
+                xml:space="preserve">
+                <path fill="none"
+                    d="M8.528,5.624H8.247c-0.085,0-0.156-0.068-0.156-0.154c0-0.694-0.563-1.257-1.257-1.257c-0.098,0-0.197,0.013-0.3,0.038C6.493,4.259,6.45,4.252,6.415,4.229C6.38,4.208,6.356,4.172,6.348,4.131C6.117,3.032,5.135,2.235,4.01,2.235c-1.252,0-2.297,0.979-2.379,2.23c-0.004,0.056-0.039,0.108-0.093,0.13C1.076,4.793,0.776,5.249,0.776,5.752c0,0.693,0.564,1.257,1.257,1.257h6.495c0.383,0,0.695-0.31,0.695-0.692S8.911,5.624,8.528,5.624z">
+                </path>
+            </svg>
+
+            <div class="rain">
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+            </div>
+
+        </div>
+    </div>
+    <!-- Back To Top Start -->
+    <a href="#main-wrapper" id="backto-top" class="back-to-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!-- Main Wrapper Start -->
+    <div id="main-wrapper" class="main-wrapper overflow-hidden">
+
+
+        <!-- inner banner Start -->
+        <section class="inner-slider ">
+            <!-- Header Area Start -->
+            <div class="header ">
+                <nav class="navbar navbar-light fixed-top m-3 " style="background-color: transparent;">
+                    <div class="container-fluid">
+                        <a class="navbar-brand light-logo" href="accueil.html"><img alt=""
+                                src="assets/media/logo-dark.png"></a>
+                        <a class="navbar-brand dark-logo" href="accueil.html"><img alt=""
+                                src="assets/media/logo-light.png"></a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                            aria-labelledby="offcanvasNavbarLabel">
+                            <div class="offcanvas-header">
+                                <a class="navbar-brand light-logo" href="#"><img alt=""
+                                        src="assets/media/logo-dark.png"></a>
+                                <a class="navbar-brand dark-logo" href="#"><img alt=""
+                                        src="assets/media/logo-light.png"></a>
+                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3" style="text-align:left">
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" aria-current="page" href="index.html">Home</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" aria-current="page" href="map.html">weather detail</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link active" href="news.html">News</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="weather-map.html">weather map</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="contact.html">Contact</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="gallery.html">Gallery</a>
+                                    </li>
+                                    <li
+                                        class="nav-item color-mode d-flex align-items-center justify-content-between py-2">
+                                        <p class="nav-link mb-0 mt-0 active col-4">Dark Mode</p>
+                                        <label class="switch col-4">
+                                            <input type="checkbox" id="changeColor">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                                <form class="d-flex py-5">
+                                    <input class="form-control me-2" type="search" placeholder="Search"
+                                        aria-label="Search">
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!-- Header Area end -->
+            <div class="container">
+                <h2 class="title">News Details</h2>
+            </div>
+            <div class='clouds'>
+                <div class='clouds-1'></div>
+                <div class='clouds-2'></div>
+                <div class='clouds-3'></div>
+            </div>
+        </section>
+        <!-- inner banner End -->
+
+        <!-- Blog area Start -->
+        <section class="blog-detail p-100">
+            <div class="container">
+                <div class="row row-gap-4">
+                    <div class="col-xl-8 mb-lg-0 mb-4">
+                        <div class="title">
+                            <h2 class="fw-5 fs-33 lh-120 color-dark mb-24">The impact of climate change on global
+                                weather patterns</h2>
+                        </div>
+                        <div class="social-area-detail mb-24">
+                            <ul class="detail list-unstyled">
+                                <li>12 March</li>
+                                <li>Weather Forecast</li>
+                                <li>by Emma Garcia</li>
+                            </ul>
+                            <ul class="icon list-unstyled">
+                                <li>
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fab fa-instagram"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <img src="assets/media/blog/img-12.png" class="radius-20 w-100 object-fit-cover mb-16" alt="">
+                        <p class="fw-4 fs-16 color-gray mb-32">
+                            Climate change is one of the most pressing issues of our time, and it's having a profound
+                            impact on global weather patterns. The b urning of fossil fuels and other human activities
+                            are causing the Earth's temperature to rise, leading to a host of changes in the climate.
+                            Some of the most visible effects of climate change include more frequent and severe
+                            heatwaves, droughts, floods, and storms.
+                        </p>
+                        <p class="fw-4 fs-16 color-gray mb-24">
+                            These changes in weather patterns are having a profound impact on our world, from food
+                            production to water resources to the economy. For example, more frequent droughts and
+                            heatwaves can lead to crop failures and increased food prices, while more frequent floods
+                            can damage homes and infrastructure, leading to costly repairs. In addition, extreme weather
+                            events can disrupt tourism and travel, causing significant economic losses.
+                        </p>
+                        <div class="light-text bg-white-1 radius-10 p-30 mb-24">
+                            <p class="fs-23 color-dark-2 mb-24 lh-120">"The sun did not shine. It was too wet to play.
+                                So we sat in the house. All that cold, cold, wet day."</p>
+                            <p class="fs-19 color-dark-2  m-0">Emma Garcia</p>
+                        </div>
+                        <p class="fw-4 fs-16 color-gray mb-16">
+                            To address the impacts of climate change on global weather patterns, it's important to
+                            reduce greenhouse gas emissions and shift to more sustainable practices. This includes
+                            transitioning to renewable energy sources, improving energy efficiency, and adopting more
+                            sustainable land use practices. By taking action to reduce our impact on the environment, we
+                            can help ensure a stable and healthy climate for future generations.
+                        </p>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <img src="assets/media/blog/img-13.png" class="w-100 object-fit-cover radius-20 mb-16"
+                                    alt="">
+                            </div>
+                            <div class="col-lg-6">
+                                <img src="assets/media/blog/img-14.png" class="w-100 object-fit-cover radius-20 mb-16"
+                                    alt="">
+                            </div>
+                        </div>
+                        <p class="fw-4 fs-16 color-gray mb-32">
+                            To address the impacts of climate change on global weather patterns, it's important to
+                            reduce greenhouse gas emissions and shift to more sustainable practices. This includes
+                            transitioning to renewable energy sources, improving energy efficiency, and adopting more
+                            sustainable land use practices. By taking action to reduce our impact on the environment, we
+                            can help ensure a stable and healthy climate for future generations.
+                        </p>
+                        <div class="d-flex align-items-center mb-24">
+                            <img src="assets/media/user/img-1.png" class="user-image radius-10" alt="">
+                            <div class="detail ms-4">
+                                <p class="color-dark-2 fw-4 fs-16 mb-1">Author</p>
+                                <h5 class="fs-19 fw-5 color-dark-2 m-0">Emma Garcia</h5>
+                            </div>
+                        </div>
+                        <p class="fw-4 fs-16  color-gray mb-32">Emma Garcia is a seasoned writer and marketing
+                            professional with a focus on the creative agency industry. With years of experience under
+                            his/her belt, [Author's first name] brings a wealth of knowledge and expertise to his/her
+                            writing on the latest trends, strategies, and best practices in the industry.</p>
+                        <div class="d-flex align-items-center justify-content-between other-blog-btn mb-48">
+                            <a href="#">Perv Post</a>
+                            <a href="#">Next post</a>
+                        </div>
+                        <div class="comment">
+                            <h2 class="fw-5 fs-40 lh-120 color-dark mb-64">3 Comments</h2>
+                            <div class="d-flex align-items-start mb-24">
+                                <img src="assets/media/user/img-2.png" class="radius-10" alt="">
+                                <div class="ms-3">
+                                    <div class="d-flex align-items-end justify-content-between mb-16">
+                                        <div class="text">
+                                            <p class="fw-4 fs-16 color-gray mb-1">17 Fab 2023</p>
+                                            <h5 class="fs-19 fw-5 color-dark m-0">Isabella Garcia</h5>
+                                        </div>
+                                        <a href="#" class="fw-4 fs-16 color-dark-2 m-0">Reply</a>
+                                    </div>
+                                    <p class="fw-4 fs-16  color-gray mb-48">I'm looking to expand my brand's online
+                                        presence but not sure where to start. Can a creative agency really help me?</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-11 offset-lg-1">
+                                <div class="d-flex align-items-start mb-24">
+                                    <img src="assets/media/user/img-3.png" class="radius-10" alt="">
+                                    <div class="ms-3">
+                                        <div class="d-flex align-items-end justify-content-between mb-16">
+                                            <div class="text">
+                                                <p class="fw-4 fs-16 color-gray mb-1">18 Fab 2023</p>
+                                                <h5 class="fs-19 fw-5 color-dark m-0">Sarah Johnson</h5>
+                                            </div>
+                                            <a href="#" class="fw-4 fs-16 color-dark-2 m-0">Reply</a>
+                                        </div>
+                                        <p class="fw-4 fs-16  color-gray mb-48">Thank you for your kind words and for
+                                            sharing your positive experience with our agency. We are thrilled to have
+                                            been able to help boost your brand!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start mb-48">
+                                <img src="assets/media/user/img-4.png" class="radius-10" alt="">
+                                <div class="ms-3">
+                                    <div class="d-flex align-items-end justify-content-between mb-16">
+                                        <div class="text">
+                                            <p class="fw-4 fs-16 color-gray mb-1">24 Fab 2023</p>
+                                            <h5 class="fs-19 fw-5 color-dark m-0">Olivia Brown</h5>
+                                        </div>
+                                        <a href="#" class="fw-4 fs-16 color-dark-2 m-0">Reply</a>
+                                    </div>
+                                    <p class="fw-4 fs-16  fw-4 fs-16 color-gray">I'm looking to expand my brand's online
+                                        presence but not sure where to start. Can a creative agency really help me?</p>
+                                </div>
+                            </div>
+                            <h2 class="fw-5 fs-40 color-dark mb-12 lh-120">Leave a Comment</h2>
+                            <p class="color-dark-2 mb-64">Your email will be kept private. Required fields are marked *
+                            </p>
+                            <form method="post"
+                                action="https://uiparadox.co.uk/public/templates/thunderpro/v2/news-detail.html"
+                                class="contact-form">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group mb-32">
+                                            <textarea class="form-control" required name="message"
+                                                placeholder="Your Message"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group mb-32">
+                                            <input type="text" class="form-control" id="name" name="name" required
+                                                placeholder="Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group mb-32">
+                                            <input type="email" class="form-control" id="email" name="email" required
+                                                placeholder="Email">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group mb-32">
+                                            <input type="tel" class="form-control" id="website" name="website" required
+                                                placeholder="Website">
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-start mb-32">
+                                        <input type="checkbox" class="check-input" id="check">
+                                        <label for="check" class="check-label">Please remember my details for future
+                                            comments.</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="weather-btn border-0">
+                                    Send Comment
+                                </button>
+                                <!-- Alert Message -->
+                                <div id="message" class="alert-msg"></div>
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="sidebar-detail bg-white-1 radius-10">
+                            <div class="row">
+                                <div class="col-12">
+                                    <form
+                                        action="https://uiparadox.co.uk/public/templates/thunderpro/v2/news-detail.html"
+                                        class="mb-64">
+                                        <div class="input-group m-0">
+                                            <input type="text" class="form-control" id="search" name="search" required
+                                                placeholder="Search for location...">
+                                            <button type="submit"><i class="fal fa-search"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-lg-12  col-12 mb-64">
+                                    <h4 class="fw-5 fs-28 color-dark lh-120 mb-32">Categories</h4>
+                                    <a href="#"
+                                        class="category-link d-flex align-items-center justify-content-between mb-16">
+                                        <p class="fw-4 fs-16 m-0">Local Weather</p>
+                                        <span class="fw-4 fs-16 color-gray m-0">(5)</span>
+                                    </a>
+                                    <a href="#"
+                                        class="category-link d-flex align-items-center justify-content-between mb-16">
+                                        <p class="fw-4 fs-16 m-0">National Weather</p>
+                                        <span class="fw-4 fs-16 color-gray m-0">(8)</span>
+                                    </a>
+                                    <a href="#"
+                                        class="category-link d-flex align-items-center justify-content-between mb-16">
+                                        <p class="fw-4 fs-16 m-0">National Weather</p>
+                                        <span class="fw-4 fs-16 color-gray m-0">(6)</span>
+                                    </a>
+                                    <a href="#"
+                                        class="category-link d-flex align-items-center justify-content-between mb-16">
+                                        <p class="fw-4 fs-16 m-0">Weather Disasters</p>
+                                        <span class="fw-4 fs-16 color-gray m-0">(4)</span>
+                                    </a>
+                                    <a href="#"
+                                        class="category-link d-flex align-items-center justify-content-between mb-16">
+                                        <p class="fw-4 fs-16 m-0">Climate Change</p>
+                                        <span class="fw-4 fs-16 color-gray m-0">(7)</span>
+                                    </a>
+                                    <a href="#"
+                                        class="category-link d-flex align-items-center justify-content-between mb-0">
+                                        <p class="fw-4 fs-16 m-0">Weather Events</p>
+                                        <span class="fw-4 fs-16 color-gray m-0">(2)</span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-12 col-12 mb-64">
+                                    <h4 class="fw-5 fs-28 color-dark lh-120 mb-32">Recent News</h4>
+                                    <a href="#" class="d-flex align-items-center justify-content-lg-between mb-24">
+                                        <img src="assets/media/blog/img-15.png" alt="" class="radius-10">
+                                        <div class="text ms-3">
+                                            <h5 class="fw-4 fs-16 lh-150 color-dark-2 mb-8">Rain or Shine: Australia's
+                                                Weather Outlook</h5>
+                                            <p class="fw-4 fs-16 color-gray lh-150 m-0">17 August 2024</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="d-flex align-items-center justify-content-lg-between mb-24">
+                                        <img src="assets/media/blog/img-16.png" alt="" class="radius-10">
+                                        <div class="text ms-3">
+                                            <h5 class="fw-4 fs-16 lh-150 color-dark-2 mb-8">The Science Behind Extreme
+                                                Weather Events</h5>
+                                            <p class="fw-4 fs-16 color-gray lh-150 m-0">19 August 2024</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="d-flex align-items-center justify-content-lg-between mb-24">
+                                        <img src="assets/media/blog/img-17.png" alt="" class="radius-10">
+                                        <div class="text ms-3">
+                                            <h5 class="fw-4 fs-16 lh-150 color-dark-2 mb-8">India's Monsoon Madness:
+                                                Latest Weather Updates</h5>
+                                            <p class="fw-4 fs-16 color-gray lh-150 m-0">18 August 2024</p>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="d-flex align-items-center justify-content-lg-between mb-0">
+                                        <img src="assets/media/blog/img-18.png" alt="" class="radius-10">
+                                        <div class="text ms-3">
+                                            <h5 class="fw-4 fs-16 lh-150 color-dark-2 mb-8">Discoveries in Space
+                                                Exploration and Astronomy</h5>
+                                            <p class="fw-4 fs-16 color-gray lh-150 m-0">20 August 2024</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-lg-12 col-12">
+                                    <h4 class="fw-5 fs-28 color-dark lh-120 mb-32">Tags</h4>
+                                    <ul class="tag list-unstyled m-0">
+                                        <li><a href="#">#Storms</a></li>
+                                        <li><a href="#">#Temperature</a></li>
+                                        <li><a href="#">#Hurricane</a></li>
+                                        <li><a href="#">#Thunderstorm</a></li>
+                                        <li><a href="#">#Windy Conditions</a></li>
+                                        <li><a href="#">#Humidity</a></li>
+                                        <li><a href="#">#Cold Front</a></li>
+                                        <li><a href="#">#Heatwave</a></li>
+                                        <li><a href="#">#Climate Change</a></li>
+                                        <li><a href="#">#Weather Patterns</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Blog area End -->
+
+        <!-- Footer area Start -->
+        <footer class="footer  pt-100 pb-0">
+            <div class="container">
+                <div class="text-center">
+                    <a href="index-2.html" class="logo mb-32">
+                        <img src="assets/media/logo-dark.png" class="light" alt="">
+                        <img src="assets/media/logo-light.png" class="dark" alt="">
+                    </a>
+                    <p class="fw-4 fs-13 lh-120 color-dark-2 mb-32">A weather app that provides accurate and up-to-date
+                        weather <br> information for users.</p>
+                    <ul class="icon list-unstyled">
+                        <li>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9.49467 6.77491L15.323 0H13.9418L8.88114 5.88256L4.83917 0H0.177246L6.28949 8.89547L0.177246 16H1.55844L6.90267 9.78782L11.1713 16H15.8332L9.49433 6.77491H9.49467ZM7.60293 8.97384L6.98364 8.08805L2.0561 1.03974H4.17754L8.15411 6.72795L8.77341 7.61374L13.9425 15.0075H11.8211L7.60293 8.97418V8.97384Z"
+                                        fill="black" />
+                                </svg>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        </li>
+                    </ul>
+                    <ul class="footer-link list-unstyled mb-48">
+                        <li><a href="index.html" class="active">Home</a></li>
+                        <li><a href="news.html" class="">News</a></li>
+                        <li><a href="map.html" class="">Map</a></li>
+                        <li><a href="gallery.html" class="">Pictures</a></li>
+                        <li><a href="weather-map.html">Wheather map</a></li>
+                        <li><a href="contact.html" class="">Contact Us</a></li>
+                    </ul>
+                    <p class="fw-4 fs-13 color-dark-2 copyright m-0">©2024 WeatherPro, All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer area End -->
+
+
+    </div>
+    <!-- Jquery Js -->
+    <script src="assets/js/vendor/jquery-3.6.3.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src="assets/js/vendor/slick.min.js"></script>
+    <script src="assets/js/vendor/jquery-appear.js"></script>
+    <script src="assets/js/vendor/jquery-validator.js"></script>
+    <script src="assets/js/vendor/smooth-scroll595e.js"></script>
+    <!-- Site Scripts -->
+    <script src="assets/js/app.js"></script>
+
+</body>
+
+
+
+</html>

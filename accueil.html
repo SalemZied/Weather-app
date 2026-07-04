@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+            shrink-to-fit=no">
+    <meta name="description" content="Bytez HTML5 Template">
+
+    <title>Thunder Pro Weather Forcast And News Template </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/media/favicon-light.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- All CSS files -->
+    <link rel="stylesheet" href="assets/css/vendor/animate.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/font-awesome.css">
+    <link rel="stylesheet" href="assets/css/vendor/slick.css">
+    <link rel="stylesheet" href="assets/css/vendor/slick-theme.css">
+    <link rel="stylesheet" href="assets/css/vendor/mbr-additionale.css">
+    <link rel="stylesheet" href="assets/css/vendor/mobirisee.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-266165434-1"></script>
+
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-266165434-1');
+        const options = {
+            key: 'zrWWohVHYYvGxqxmBd16xOUftqkCfM90', // REPLACE WITH YOUR KEY !!!
+
+            // Changing Windy parameters at start-up time
+            lat: 33.9,
+            lon: 9.5,
+            zoom: 6,
+
+            timestamp: Date.now() + 3 * 24 * 60 * 60 * 1000,
+
+
+
+        };
+
+        windyInit(options, windyAPI => {
+            const { store } = windyAPI;
+            // All the params are stored in windyAPI.store
+
+            const levels = store.getAllowed('availLevels');
+            // levels = ['surface', '850h', ... ]
+            // Getting all available values for given key
+
+            let i = 0;
+            setInterval(() => {
+                i = i === levels.length - 1 ? 0 : i + 1;
+
+                // Changing Windy params at runtime
+                store.set('level', levels[i]);
+            }, 500);
+
+            // Observing change of .store value
+            store.on('level', level => {
+                console.log(`Level was changed: ${level}`);
+            });
+        });
+    </script>
+    <style>
+        #windy #bottom,
+        #windy #mobile-ovr-select,
+        #windy #embed-zoom {
+            display: none !important;
+        }
+
+        #windy #logo-wrapper {
+            top: initial;
+            bottom: 65px;
+        }
+
+        #windy #logo-wrapper #logo {
+            left: 80px;
+            display: none
+        }
+
+        /* Style du bouton */
+        .arrow-button {
+            background-color: #FFAD51;
+            color: white;
+            font-size: 16px;
+            padding: 12px 24px;
+            border: 2px solid #FFAD51;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            text-transform: uppercase;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .arrow-button:hover {
+            color: #fff;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .arrow {
+            font-size: 20px;
+            transition: transform 0.3s ease-in-out, color 0.3s ease-out;
+        }
+
+
+        .arrow-button:hover .arrow {
+            transform: translateX(8px);
+            color: #fff;
+        }
+    </style>
+
+</head>
+
+<body class="">
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader" style="opacity: 1; ">
+            <svg version="1.1" id="sun" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10"
+                xml:space="preserve" style="opacity: 1; margin-left: 0px; margin-top: 0px;">
+                <g>
+                    <path fill="none"
+                        d="M6.942,3.876c-0.4-0.692-1.146-1.123-1.946-1.123c-0.392,0-0.779,0.104-1.121,0.301c-1.072,0.619-1.44,1.994-0.821,3.067C3.454,6.815,4.2,7.245,5,7.245c0.392,0,0.779-0.104,1.121-0.301C6.64,6.644,7.013,6.159,7.167,5.581C7.321,5,7.243,4.396,6.942,3.876z
+                            M6.88,5.505C6.745,6.007,6.423,6.427,5.973,6.688C5.676,6.858,5.34,6.948,5,6.948c-0.695,0-1.343-0.373-1.69-0.975C2.774,5.043,3.093,3.849,4.024,3.312C4.32,3.14,4.656,3.05,4.996,3.05c0.695,0,1.342,0.374,1.69,0.975C6.946,4.476,7.015,5,6.88,5.505z">
+                    </path>
+                    <path fill="none"
+                        d="M8.759,2.828C8.718,2.757,8.626,2.732,8.556,2.774L7.345,3.473c-0.07,0.041-0.094,0.132-0.053,0.202C7.319,3.723,7.368,3.75,7.419,3.75c0.025,0,0.053-0.007,0.074-0.02l1.211-0.699C8.774,2.989,8.8,2.899,8.759,2.828z">
+                    </path>
+                    <path fill="none"
+                        d="M1.238,7.171c0.027,0.047,0.077,0.074,0.128,0.074c0.025,0,0.051-0.008,0.074-0.02l1.211-0.699c0.071-0.041,0.095-0.133,0.054-0.203S2.574,6.228,2.503,6.269l-1.21,0.699C1.221,7.009,1.197,7.101,1.238,7.171z">
+                    </path>
+                    <path fill="none"
+                        d="M6.396,2.726c0.052,0,0.102-0.026,0.13-0.075l0.349-0.605C6.915,1.976,6.89,1.885,6.819,1.844c-0.07-0.042-0.162-0.017-0.202,0.054L6.269,2.503C6.228,2.574,6.251,2.666,6.322,2.706C6.346,2.719,6.371,2.726,6.396,2.726z">
+                    </path>
+                    <path fill="none"
+                        d="M3.472,7.347L3.123,7.952c-0.041,0.07-0.017,0.162,0.054,0.203C3.2,8.169,3.226,8.175,3.25,8.175c0.052,0,0.102-0.027,0.129-0.074l0.349-0.605c0.041-0.07,0.017-0.16-0.054-0.203C3.603,7.251,3.513,7.276,3.472,7.347z">
+                    </path>
+                    <path fill="none"
+                        d="M3.601,2.726c0.025,0,0.051-0.007,0.074-0.02C3.746,2.666,3.77,2.574,3.729,2.503l-0.35-0.604C3.338,1.828,3.248,1.804,3.177,1.844C3.106,1.886,3.082,1.976,3.123,2.047l0.35,0.604C3.5,2.7,3.549,2.726,3.601,2.726z">
+                    </path>
+                    <path fill="none"
+                        d="M6.321,7.292c-0.07,0.043-0.094,0.133-0.054,0.203l0.351,0.605c0.026,0.047,0.076,0.074,0.127,0.074c0.025,0,0.051-0.006,0.074-0.02c0.072-0.041,0.096-0.133,0.055-0.203l-0.35-0.605C6.483,7.276,6.393,7.253,6.321,7.292z">
+                    </path>
+                    <path fill="none"
+                        d="M2.202,5.146c0.082,0,0.149-0.065,0.149-0.147S2.284,4.851,2.202,4.851H1.503c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147H2.202z">
+                    </path>
+                    <path fill="none"
+                        d="M8.493,4.851H7.794c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147l0,0h0.699c0.082,0,0.148-0.065,0.148-0.147S8.575,4.851,8.493,4.851L8.493,4.851z">
+                    </path>
+                    <path fill="none"
+                        d="M5.146,2.203V0.805c0-0.082-0.066-0.148-0.148-0.148c-0.082,0-0.148,0.066-0.148,0.148v1.398c0,0.082,0.066,0.149,0.148,0.149C5.08,2.352,5.146,2.285,5.146,2.203z">
+                    </path>
+                    <path fill="none"
+                        d="M4.85,7.796v1.396c0,0.082,0.066,0.15,0.148,0.15c0.082,0,0.148-0.068,0.148-0.15V7.796c0-0.082-0.066-0.148-0.148-0.148C4.917,7.647,4.85,7.714,4.85,7.796z">
+                    </path>
+                    <path fill="none"
+                        d="M2.651,3.473L1.44,2.774C1.369,2.732,1.279,2.757,1.238,2.828C1.197,2.899,1.221,2.989,1.292,3.031l1.21,0.699c0.023,0.013,0.049,0.02,0.074,0.02c0.051,0,0.101-0.026,0.129-0.075C2.747,3.604,2.722,3.514,2.651,3.473z">
+                    </path>
+                    <path fill="none"
+                        d="M8.704,6.968L7.493,6.269c-0.07-0.041-0.162-0.016-0.201,0.055c-0.041,0.07-0.018,0.162,0.053,0.203l1.211,0.699c0.023,0.012,0.049,0.02,0.074,0.02c0.051,0,0.102-0.027,0.129-0.074C8.8,7.101,8.776,7.009,8.704,6.968z">
+                    </path>
+                </g>
+            </svg>
+
+            <svg version="1.1" id="cloud" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10"
+                xml:space="preserve">
+                <path fill="none"
+                    d="M8.528,5.624H8.247c-0.085,0-0.156-0.068-0.156-0.154c0-0.694-0.563-1.257-1.257-1.257c-0.098,0-0.197,0.013-0.3,0.038C6.493,4.259,6.45,4.252,6.415,4.229C6.38,4.208,6.356,4.172,6.348,4.131C6.117,3.032,5.135,2.235,4.01,2.235c-1.252,0-2.297,0.979-2.379,2.23c-0.004,0.056-0.039,0.108-0.093,0.13C1.076,4.793,0.776,5.249,0.776,5.752c0,0.693,0.564,1.257,1.257,1.257h6.495c0.383,0,0.695-0.31,0.695-0.692S8.911,5.624,8.528,5.624z">
+                </path>
+            </svg>
+
+            <div class="rain">
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+                <span class="drop"></span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Back To Top Start -->
+    <a href="#main-wrapper" id="backto-top" class="back-to-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!-- Main Wrapper Start -->
+    <div id="main-wrapper" class="main-wrapper overflow-hidden">
+
+        <!-- Weather banner start -->
+        <section class="weather-banner-2">
+
+            <!-- Header Area Start -->
+            <div class="header ">
+                <nav class="navbar navbar-light fixed-top m-3 " style="background-color: transparent;">
+                    <div class="container-fluid">
+                        <a class="navbar-brand light-logo" href="accueil.html"><img alt=""
+                                src="assets/media/logo-dark.png"></a>
+                        <a class="navbar-brand dark-logo" href="accueil.html"><img alt=""
+                                src="assets/media/logo-light.png"></a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                            aria-labelledby="offcanvasNavbarLabel">
+                            <div class="offcanvas-header">
+                                <a class="navbar-brand light-logo" href="#"><img alt=""
+                                        src="assets/media/logo-dark.png"></a>
+                                <a class="navbar-brand dark-logo" href="#"><img alt=""
+                                        src="assets/media/logo-light.png"></a>
+                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" aria-current="page" href="map.html">weather detail</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="news.html">News</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="weather-map.html">weather map</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="contact.html">Contact</a>
+                                    </li>
+                                    <li class="nav-item py-2">
+                                        <a class="nav-link" href="gallery.html">Gallery</a>
+                                    </li>
+                                    <li
+                                        class="nav-item color-mode d-flex align-items-center justify-content-between py-2">
+                                        <p class="nav-link mb-0 mt-0 active col-4">Dark Mode</p>
+                                        <label class="switch col-4">
+                                            <input type="checkbox" id="changeColor">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                                <form class="d-flex py-5">
+                                    <input class="form-control me-2" type="search" placeholder="Search"
+                                        aria-label="Search">
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!-- Header Area end -->
+
+            <div class="container">
+                <div class="content">
+                    <div class="row justify-content-between">
+                        <div class="col-xl-8 col-lg-6 mb-lg-0 mb-4">
+                            <div class="text">
+                                <h5 class="fw-4 fs-23">Weather and Forecast </h5>
+                                <h2 class="fw-4 lh-120">Daily Weather Forecast <br> Update News</h2>
+                                <p class="fs-19 fw-5 lh-150 bottom-space pt-0">Get the latest weather forecast for today
+                                    with up-to-date <br> information on temperature, precipitation, and more.</p>
+                                <a class="arrow-button" id="detailButton" href="">More
+                                    detail <i class="fas fa-arrow-right arrow"></i> </a>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-6 ">
+                            <div class="detail p-100 text-center">
+                                <!--<section class="card" data-highlights></section>-->
+                                <div class="d-flex align-items-center justify-content-between mb-32 city-detail">
+
+                                    <div id="city-name"></div>
+                                    <img src="" id="weather-icon" alt="Weather Icon">
+                                </div>
+
+                                <h5 class="fw-5 fs-23 color-dark" id="p2"></h5>
+
+                                <div id="temp-div"></div>
+
+                                <div id="weather-info"></div>
+
+                                <div id="wind-hum"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Weather banner End -->
+
+        <!-- Hourly area Start -->
+        <section class="hourly pt-100">
+            <div class="container">
+                <div class="title text-center">
+                    <h2 class="fw-5 fs-40 lh-120 ls-5 color-dark mb-16">Hourly Update </h2>
+                    <p class="fw-4 fs-16 lh-160 ls-2 color-gray mb-48">The 'Recent Search Weather' section displays the
+                        latest weather information for the cities you have recently <br> searched. Stay up-to-date with
+                        the weather conditions of your preferred cities with this section.</p>
+                </div>
+
+                <div class="hourly-slider" id="hourly-forecast">
+
+                </div>
+            </div>
+        </section>
+        <!-- Hourly area End -->
+
+        <!-- Recent area Start -->
+        <section class="recent pt-100 " style="padding-bottom: 5em;">
+            <div class="container">
+                <div class="title text-center">
+                    <h2 class="fw-5 fs-40 lh-120 ls-5 color-dark mb-16">Random World Weather</h2>
+                    <p class="fw-4 fs-16 lh-160 ls-2 color-gray mb-48">The 'Random World Weather' section brings you
+                        weather updates for a selection of random cities from around the globe.<br>Discover the current
+                        weather conditions of various destinations, giving you a glimpse of the world at a glance!</p>
+                </div>
+                <div class="recent-slider" id="world-forecast">
+                </div>
+            </div>
+
+        </section>
+        <!-- Recent area End -->
+
+        <!-- Global area Start -->
+        <section data-bs-version="5.1" class="global  scalem5 cid-uyQ2xqZhbk">
+            <div class="container">
+                <div class="title text-center">
+                    <h2 class="fw-5 fs-40 lh-120 ls-5 color-dark mb-16">Global Weather Outlook</h2>
+                    <p class="fw-4 fs-16 lh-160 ls-2 color-gray mb-48">Global Weather Outlook provides a forecast for
+                        various regions worldwide. Stay informed about weather <br> conditions in different parts of the
+                        world.</p>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/India.png" alt="Bulgaria" class="country-flag">
+                                    <span class="country-link color-dark">India</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/australia.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">Australia</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/canada.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">Canada</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/denmark.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">Denmark</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/germany.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">Germany</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/pakistan.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">Pakistan</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/poland.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">Poland</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/spain.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">Spain</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/turkey.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">Turkey</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/united-kingdom.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">UK</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/united-states.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">US</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <div class="country-card">
+                            <div class="d-flex align-items-center">
+                                <a href="map.html">
+                                    <img src="assets/media/flag/vietnam.png" alt="Ukraine" class="country-flag">
+                                    <span class="country-link color-dark">Vietnam</span>
+                                </a>
+                            </div>
+                            <i class="arrow-icon fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Global area End -->
+
+        <section data-bs-version="5.1" class="features02 cid-uyQ2xqW0C1 cid-uyQ2xqZhbk mbr-fullscreen">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-5 card">
+                        <div class="content-wrapper">
+                            <h2 class="mbr-section-title mbr-fonts-style display-5 color-dark">Pourquoi Choisir Nous ?
+                            </h2>
+                            <p class="mbr-text mbr-fonts-style display-7 color-dark">Parce que la météo ne doit pas être
+                                ennuyeuse
+                                !
+                                Avec nous, vous aurez des prévisions précises et des rires garantis. Qui a dit que la
+                                pluie
+                                ne pouvait pas être drôle ?</p>
+                            <div class="mbr-section-btn">
+                                <a class="btn btn-primary display-4" href="#">Rejoignez-Nous</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-5 card">
+                        <div class="items-wrapper">
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="icon-wrapper">
+                                        <span class="mbr-iconfont mobi-mbri"><i class="fas fa-check"></i></span>
+                                    </div>
+                                    <div class="card-box">
+                                        <h4 class="card-title mbr-fonts-style display-7 color-dark">Précision</h4>
+                                        <p class="card-text mbr-fonts-style display-7 color-dark">Des prévisions
+                                            fiables, même pour
+                                            les
+                                            sceptiques !</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="icon-wrapper">
+                                        <span class="mbr-iconfont mobi-mbri"><i class="fas fa-check"></i></span>
+                                    </div>
+                                    <div class="card-box">
+                                        <h4 class="card-title mbr-fonts-style display-7 color-dark">Humour</h4>
+                                        <p class="card-text mbr-fonts-style display-7 color-dark">Riez même sous la
+                                            pluie !</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="icon-wrapper">
+                                        <span class="mbr-iconfont mobi-mbri"><i class="fas fa-check"></i></span>
+                                    </div>
+                                    <div class="card-box">
+                                        <h4 class="card-title mbr-fonts-style display-7 color-dark">Communauté</h4>
+                                        <p class="card-text mbr-fonts-style display-7 color-dark">Partagez vos histoires
+                                            météo avec
+                                            nous !</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Start About Section-->
+        <section data-bs-version="5.1" class="cid-uyQ2xqZhbk">
+            <div class="about-section  weather-banner-3 ">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class=" col-lg-5 col-xl-6 wow fadeIn p-3 about"
+                            style="visibility: visible; animation-delay: 0.5s; animation-name: fadeIn;box-shadow: 14px 14px 80px -10px rgba(0, 0, 0, 2.9)">
+                            <div class="content-wrapper">
+                                <h2 class="mbr-section-title mbr-fonts-style display-5 color-dark">About Us</h2>
+                                <p class="mbr-text mbr-fonts-style display-4 color-dark">
+                                    HunderPro s'associe aux services météorologiques nationaux et à des météorologues
+                                    qualifiés pour vous proposer des prévisions précises pour n'importe quel endroit.
+                                    Nous aidons les gens à comprendre l'impact de la météo, à prendre les meilleures
+                                    décisions et à planifier leur journée à l'avance.
+                                </p>
+                                <p class="mbr-text mbr-fonts-style display-4 color-dark">
+                                    Sur notre site Web, vous pouvez vous attendre à des prévisions météorologiques très
+                                    précises qui fournissent des informations météorologiques exploitables et augmentent
+                                    votre sécurité.
+                                </p>
+                                <p class="mbr-text mbr-fonts-style display-4 color-dark">
+                                    Il existe de nombreuses variantes de passages du Lorem Ipsum disponibles, mais elles
+                                    ont subi des altérations sous une certaine forme, par injection d'humour.
+                                </p>
+                                <div class="mbr-section-btn">
+                                    <a class="btn btn-primary display-4" href="#">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" col-lg-7 col-xl-6  wow fadeIn"
+                            style="visibility: visible; animation-delay: 0.5s; animation-name: fadeIn;">
+                            <div class="gallery">
+                                <div class="grid-wrapper">
+                                    <div class="big" style="height: 100%;">
+                                        <div id="windy" class="img-fluid w-100 zoom-image"></div>
+                                    </div>
+                                    <div class="" style="height: 100% ">
+                                        <img src="assets/media/gallery/img-19.png" alt="wather-information-2"
+                                            class="img-fluid w-100 zoom-image">
+                                    </div>
+                                    <div class="" style="height: 100%;">
+                                        <img src="assets/media/gallery/img-23.png" alt="wather-information-3"
+                                            class="img-fluid w-100 zoom-image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--Start About Section-->
+
+        <section data-bs-version="5.1" class="list01 scalem5 cid-uyQ2xqZhbk">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-5">
+                        <div class="image-wrapper">
+                            <img src="assets/media/wrapper/photo-2.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <h2 class="mbr-section-title mbr-fonts-style display-7 color-dark">Questions Météorologiques Fréquemment
+                            Posées
+                        </h2>
+                        <div id="bootstrap-accordion_9" class="panel-group accordionStyles accordion" role="tablist"
+                            aria-multiselectable="true">
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingOne">
+                                    <a role="button" class="panel-title collapsed" data-toggle="collapse"
+                                        data-bs-toggle="collapse" data-core="" href="#collapse1_9" aria-expanded="false"
+                                        aria-controls="collapse1">
+                                        <h4 class="panel-title-edit mbr-fonts-style display-7 color-dark">Comment prévoyez-vous la
+                                            météo?</h4>
+                                        <span class="sign mbr-iconfont mobi-mbri"><i class="fas fa-plus"></i></span>
+                                    </a>
+                                </div>
+                                <div id="collapse1_9" class="panel-collapse noScroll collapse" role="tabpanel"
+                                    aria-labelledby="headingOne" data-parent="#accordion"
+                                    data-bs-parent="#bootstrap-accordion_9">
+                                    <div class="panel-body">
+                                        <p class="mbr-fonts-style panel-text display-4 color-dark">Nous utilisons des satellites,
+                                            des
+                                            radars et des modèles informatiques pour des prévisions précises.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingTwo">
+                                    <a role="button" class="panel-title collapsed" data-toggle="collapse"
+                                        data-bs-toggle="collapse" data-core="" href="#collapse2_9" aria-expanded="false"
+                                        aria-controls="collapse2">
+                                        <h4 class="panel-title-edit mbr-fonts-style display-7 color-dark">Pourquoi la météo
+                                            change-t-elle si vite?</h4>
+                                        <span class="sign mbr-iconfont mobi-mbri"><i class="fas fa-plus"></i></span>
+                                    </a>
+                                </div>
+                                <div id="collapse2_9" class="panel-collapse noScroll collapse" role="tabpanel"
+                                    aria-labelledby="headingTwo" data-parent="#accordion"
+                                    data-bs-parent="#bootstrap-accordion_9">
+                                    <div class="panel-body">
+                                        <p class="mbr-fonts-style panel-text display-4 color-dark">La météo est capricieuse, comme
+                                            un
+                                            chat qui décide de sauter.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingThree">
+                                    <a role="button" class="panel-title collapsed" data-toggle="collapse"
+                                        data-bs-toggle="collapse" data-core="" href="#collapse3_9" aria-expanded="false"
+                                        aria-controls="collapse3">
+                                        <h4 class="panel-title-edit mbr-fonts-style display-7 color-dark">Que faire en cas de
+                                            tempête?
+                                        </h4>
+                                        <span class="sign mbr-iconfont mobi-mbri"><i class="fas fa-plus"></i></span>
+                                    </a>
+                                </div>
+                                <div id="collapse3_9" class="panel-collapse noScroll collapse" role="tabpanel"
+                                    aria-labelledby="headingThree" data-parent="#accordion"
+                                    data-bs-parent="#bootstrap-accordion_9">
+                                    <div class="panel-body">
+                                        <p class="mbr-fonts-style panel-text display-4 color-dark">Restez à l'intérieur, préparez
+                                            du
+                                            chocolat chaud et attendez!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section data-bs-version="5.1" class="article04 scalem5 cid-uyQ2xr0X7S">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-5 card">
+                        <div class="content-wrapper">
+                            <h2 class="mbr-section-title mbr-fonts-style display-5 color-dark">Prévisions Météo Éblouissantes!</h2>
+                            <p class="mbr-desc mbr-fonts-style display-7 color-dark">Découvrez la météo comme jamais auparavant!
+                            </p>
+                            <p class="mbr-text mbr-fonts-style display-4 color-dark">Notre site vous offre des prévisions
+                                météorologiques éclatantes, des alertes en temps réel et des conseils pour survivre à la
+                                tempête. Que vous planifiez un barbecue ou une randonnée, nous avons tout ce qu'il vous
+                                faut
+                                pour rester au sec et heureux!</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4 card">
+                        <div class="image-wrapper">
+                            <img src="assets/media/wrapper/photo-1.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section data-bs-version="5.1" class="article03 scalem5 cid-uyQ2xr0N5L">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-5 card">
+                        <div class="content-wrapper">
+                            <h2 class="mbr-section-title mbr-fonts-style display-5 color-dark">Rejoignez Notre Communauté!</h2>
+                            <p class="mbr-text mbr-fonts-style display-7 color-dark">Inscrivez-vous pour recevoir des mises à jour
+                                météorologiques hilarantes et des conseils pratiques. Ne laissez pas la pluie vous
+                                gâcher la
+                                journée!</p>
+                            <div class="mbr-section-btn">
+                                <a class="btn btn-primary display-4" href="#">S'inscrire</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 card">
+                        <div class="image-wrapper">
+                            <img src="assets/media/wrapper/photo-3.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section data-bs-version="5.1" class="features10 scalem5 cid-uyQ2xr2xhE">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-6 item features-image item-mb">
+                        <div class="item-wrapper">
+                            <div class="item-img">
+                                <div class="image-wrap">
+                                    <img src="assets/media/wrapper/photo-4.jpg" alt="">
+                                </div>
+                                <div class="item-content">
+                                    <h4 class="card-title mbr-fonts-style display-5 color-dark">Prévisions Locales</h4>
+                                    <div class="list-wrap">
+                                        <ul class="list mbr-fonts-style display-7">
+                                            <li class="item-wrap color-dark">Météo de votre ville</li>
+                                            <li class="item-wrap color-dark">Alertes personnalisées</li>
+                                            <li class="item-wrap color-dark">Rapports détaillés</li>
+                                        </ul>
+                                    </div>
+                                    <div class="list-wrapper">
+                                        <ul class="list mbr-fonts-style display-7">
+                                            <li class="item-wrap color-dark">Prévisions à long terme</li>
+                                            <li class="item-wrap color-dark">Graphiques interactifs</li>
+                                            <li class="item-wrap color-dark">Historique météo</li>
+                                        </ul>
+                                    </div>
+                                    <div class="mbr-section-btn">
+                                        <a class="btn btn-primary display-4" href="#">Découvrir</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 item features-image item-mb">
+                        <div class="item-wrapper">
+                            <div class="item-img">
+                                <div class="image-wrap">
+                                    <img src="assets/media/wrapper/photo-5.jpg" alt="">
+                                </div>
+                                <div class="item-content">
+                                    <h4 class="card-title mbr-fonts-style display-5 color-dark">Météo Mondiale</h4>
+                                    <div class="list-wrap">
+                                        <ul class="list mbr-fonts-style display-7">
+                                            <li class="item-wrap color-dark">Conditions actuelles</li>
+                                            <li class="item-wrap color-dark">Prévisions internationales</li>
+                                            <li class="item-wrap color-dark">Comparaisons de villes</li>
+                                        </ul>
+                                    </div>
+                                    <div class="list-wrapper">
+                                        <ul class="list mbr-fonts-style display-7">
+                                            <li class="item-wrap color-dark">Cartes interactives</li>
+                                            <li class="item-wrap color-dark">Données historiques</li>
+                                            <li class="item-wrap color-dark">Tendances climatiques</li>
+                                        </ul>
+                                    </div>
+                                    <div class="mbr-section-btn">
+                                        <a class="btn btn-primary display-4" href="#">Découvrir</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section data-bs-version="5.1" class="features07 scalem5 cid-uyQ2xr4tjt cid-uyQ2xr0N5L mbr-fullscreen">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-10 card">
+                        <div class="title-wrapper">
+                            <h2 class="mbr-section-title mbr-fonts-style display-5 color-dark">Caractéristiques Épatantes</h2>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-8">
+                        <div class="items-wrapper">
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="card-box">
+                                        <div class="icon-wrapper">
+                                            <span class="mbr-iconfont mobi-mbri-growing-chart mobi-mbri"></span>
+                                        </div>
+                                        <p class="card-title mbr-fonts-style mb-2 display-7 color-dark">Météo Précise</p>
+                                        <p class="card-text mbr-fonts-style display-7 color-dark">Des prévisions fiables pour tous
+                                            vos
+                                            besoins météorologiques.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="card-box">
+                                        <div class="icon-wrapper">
+                                            <span class="mbr-iconfont mobi-mbri-globe-2 mobi-mbri"></span>
+                                        </div>
+                                        <p class="card-title mbr-fonts-style mb-2 display-7 color-dark">Alertes Rapides</p>
+                                        <p class="card-text mbr-fonts-style display-7 color-dark">Soyez averti avant que la tempête
+                                            ne
+                                            frappe!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="card-box">
+                                        <div class="icon-wrapper">
+                                            <span class="mbr-iconfont mobi-mbri-delivery mobi-mbri"></span>
+                                        </div>
+                                        <p class="card-title mbr-fonts-style mb-2 display-7 color-dark">Humour Inclus</p>
+                                        <p class="card-text mbr-fonts-style display-7 color-dark">Rendez la météo amusante avec nos
+                                            blagues!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="card-box">
+                                        <div class="icon-wrapper">
+                                            <span class="mbr-iconfont mobi-mbri-refresh mobi-mbri"></span>
+                                        </div>
+                                        <p class="card-title mbr-fonts-style mb-2 display-7 color-dark">Accessibilité Facile</p>
+                                        <p class="card-text mbr-fonts-style display-7 color-dark">Consultez la météo où que vous
+                                            soyez!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="content-wrapper">
+                            <p class="mbr-desc mbr-fonts-style display-7 color-dark">Tout ce dont vous avez besoin!</p>
+                            <div class="mbr-section-btn">
+                                <a class="btn btn-primary display-4" href="#">En Savoir Plus</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="image-wrap">
+                <img src="assets/media/wrapper/photo-6.png" alt="">
+            </div>
+        </section>
+
+        <section data-bs-version="5.1" class="slider02 mbr-embla scalem5 cid-uyQ2xr5ffF">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="title-wrapper">
+                            <h2 class="mbr-section-title mbr-fonts-style display-5 color-dark">Nos Partenaires</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="embla" data-skip-snaps="true" data-align="center" data-contain-scroll="trimSnaps"
+                            data-loop="true" data-auto-play="true" data-auto-play-interval="2" data-draggable="true">
+                            <div class="embla__viewport">
+                                <div class="embla__container">
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short3.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short5.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short2.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short6.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short4.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short1.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short5.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short3.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short2.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short6.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="embla__slide slider-image item"
+                                        style="margin-left: 1rem; margin-right: 1rem;">
+                                        <div class="slide-content">
+                                            <div class="item-wrapper">
+                                                <div class="item-img">
+                                                    <img src="assets/media/partenaire/short4.png" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="embla__button embla__button--prev">
+                                <span class="mobi-mbri mobi-mbri-left mbr-iconfont mbr-iconfont-btn"
+                                    aria-hidden="true"></span>
+                                <span class="sr-only visually-hidden visually-hidden visually-hidden">Previous</span>
+                            </button>
+                            <button class="embla__button embla__button--next">
+                                <span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"
+                                    aria-hidden="true"></span>
+                                <span class="sr-only visually-hidden visually-hidden visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog area Start -->
+        <section data-bs-version="5.1" class="blog pt-100 pb-100 cid-uyQ2xr0N5L">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-5 card">
+                        <div class="content-wrapper">
+                            <h2 class="mbr-section-title mbr-fonts-style display-5 color-dark">Derniers Articles Météo</h2>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-5 card">
+                        <div class="content-wrapper">
+                            <p class="mbr-text mbr-fonts-style display-7 color-dark">Restez à jour avec nos articles hilarants <br>
+                                et
+                                informatifs sur la météo !</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-2 card">
+                        <div class="content-wrapper">
+                            <div class="mbr-section-btn">
+                                <a class="btn btn-primary display-4" href="#">Lire Plus</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-lg-0 mb-4">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <a href="news-detail.html" class="mb-22">
+                                    <img src="assets/media/blog/img-2.png" alt="">
+                                    <div class="text">
+                                        <h5>India's Monsoon Madness: Latest Weather Updates</h5>
+                                        <span class="me-3"><i class="fas fa-user"></i> Author</span>
+                                        <span><i class="fas fa-calendar-alt"></i> 12 Mar 2023</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-12">
+                                <a href="news-detail.html">
+                                    <img src="assets/media/blog/img-4.png" alt="">
+                                    <div class="text">
+                                        <h5>Rain or Shine: Australia's Weather Outlook</h5>
+                                        <span class="me-3"><i class="fas fa-user"></i> Author</span>
+                                        <span><i class="fas fa-calendar-alt"></i> 12 Mar 2023</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-lg-0 mb-4">
+                        <a href="news-detail.html">
+                            <img src="assets/media/blog/img-1.png" alt="">
+                            <div class="text">
+                                <h4>Rainy Day: UK Weather Forecast</h4>
+                                <span class="me-3"><i class="fas fa-user"></i> Author</span>
+                                <span><i class="fas fa-calendar-alt"></i> 12 Mar 2023</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-6 col-12">
+                                <a href="news-detail.html" class="mb-22">
+                                    <img src="assets/media/blog/img-3.png" alt="">
+                                    <div class="text">
+                                        <h5>South Africa's Weather Warnings and Forecasts</h5>
+                                        <span class="me-3"><i class="fas fa-user"></i> Author</span>
+                                        <span><i class="fas fa-calendar-alt"></i> 12 Mar 2023</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-12 col-md-6 col-12">
+                                <a href="news-detail.html">
+                                    <img src="assets/media/blog/img-5.png" alt="">
+                                    <div class="text">
+                                        <h5>UK Weather Update: Latest Forecasts and Warnings</h5>
+                                        <span class="me-3"><i class="fas fa-user"></i> Author</span>
+                                        <span><i class="fas fa-calendar-alt"></i> 12 Mar 2023</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Blog area End -->
+
+        <section data-bs-version="5.1" class="features11 scalem5 cid-uyQ2xr6Ymp">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-4 card">
+                        <div class="title-wrapper">
+                            <h2 class="mbr-section-title mbr-fonts-style display-5 color-dark">Fonctionnalités Épatantes</h2>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-8 card">
+                        <div class="items-wrapper">
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="card-box">
+                                        <div class="icon-wrapper">
+                                            <span class="mbr-iconfont mobi-mbri-success mobi-mbri"></span>
+                                        </div>
+                                        <p class="card-title mbr-fonts-style display-7 color-dark">Prévisions Météo Précises</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="card-box">
+                                        <div class="icon-wrapper">
+                                            <span class="mbr-iconfont mobi-mbri-success mobi-mbri"></span>
+                                        </div>
+                                        <p class="card-title mbr-fonts-style display-7 color-dark">Alertes Tempête Instantanées</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="card-box">
+                                        <div class="icon-wrapper">
+                                            <span class="mbr-iconfont mobi-mbri-success mobi-mbri"></span>
+                                        </div>
+                                        <p class="card-title mbr-fonts-style display-7 color-dark">Cartes Météo Interactives</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item features-without-image item-mb">
+                                <div class="item-wrapper">
+                                    <div class="card-box">
+                                        <div class="icon-wrapper">
+                                            <span class="mbr-iconfont mobi-mbri-success mobi-mbri"></span>
+                                        </div>
+                                        <p class="card-title mbr-fonts-style display-7 color-dark">Rapports Météo Quotidiens</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section data-bs-version="5.1" class="pricing01 scalem5 cid-uyQ2xr7yf9">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-6 item features-without-image item-mb">
+                        <div class="item-wrapper">
+                            <div class="item-content">
+                                <h4 class="card-title mbr-fonts-style display-5 color-dark">Gratuit</h4>
+                                <p class="card-price mbr-fonts-style display-1 color-dark">0€</p>
+                                <div class="list-wrapper">
+                                    <ul class="list mbr-fonts-style display-7">
+                                        <li class="item-wrap color-dark">Accès Basique</li>
+                                        <li class="item-wrap color-dark">Prévisions Locales</li>
+                                        <li class="item-wrap color-dark">avec Publicité</li>
+                                    </ul>
+                                </div>
+                                <div class="mbr-section-btn">
+                                    <a class="btn btn-primary display-4" href="#">Commencer Maintenant</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 item features-without-image item-mb">
+                        <div class="item-wrapper">
+                            <div class="item-content">
+                                <h4 class="card-title mbr-fonts-style display-5 color-dark">Premium</h4>
+                                <p class="card-price mbr-fonts-style display-1 color-dark">9.99€</p>
+                                <div class="list-wrapper">
+                                    <ul class="list mbr-fonts-style display-7">
+                                        <li class="item-wrap color-dark">Accès Complet</li>
+                                        <li class="item-wrap color-dark">Alertes Personnalisées</li>
+                                        <li class="item-wrap color-dark">Support Prioritaire</li>
+                                    </ul>
+                                </div>
+                                <div class="mbr-section-btn">
+                                    <a class="btn btn-primary display-4" href="#">Commencer Maintenant</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section data-bs-version="5.1" class="features03 scalem5 cid-uyQ2xr86oe cid-uyQ2xr0N5L mbr-fullscreen">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-6 card">
+                        <div class="content-wrapper">
+                            <h2 class="mbr-section-title mbr-fonts-style display-5 color-dark">Notre Équipe Énergique</h2>
+                            <p class="mbr-text mbr-fonts-style display-7 color-dark">Des experts passionnés prêts à vous tenir au
+                                courant du temps qu'il fait !</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 card">
+                        <div class="content-wrapper">
+                            <div class="mbr-section-btn">
+                                <a class="btn btn-primary display-4" href="#">Rencontrez Nous</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row items-wrapper">
+                    <div class="col-12 col-lg-3 col-md-6 item features-image item-mb">
+                        <div class="item-wrapper">
+                            <div class="item-img">
+                                <div class="image-wrap">
+                                    <img src="assets/media/team/team1.png" alt="">
+                                </div>
+                                <span class="mbr-iconfont mobi-mbri-letter mobi-mbri"></span>
+                            </div>
+                            <div class="item-content">
+                                <h4 class="card-name mbr-fonts-style display-7 color-dark">Pierre Dupont</h4>
+                                <p class="card-role mbr-fonts-style display-7 color-dark">Météorologue En Chef</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6 item features-image item-mb">
+                        <div class="item-wrapper">
+                            <div class="item-img">
+                                <div class="image-wrap">
+                                    <img src="assets/media/team/team2.jpg" alt="">
+                                </div>
+                                <span class="mbr-iconfont mobi-mbri-letter mobi-mbri"></span>
+                            </div>
+                            <div class="item-content">
+                                <h4 class="card-name mbr-fonts-style display-7 color-dark">Sophie Martin</h4>
+                                <p class="card-role mbr-fonts-style display-7 color-dark">Analyste Météo</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6 item features-image item-mb">
+                        <div class="item-wrapper">
+                            <div class="item-img">
+                                <div class="image-wrap">
+                                    <img src="assets/media/team/team3.jpg" alt="">
+                                </div>
+                                <span class="mbr-iconfont mobi-mbri-letter mobi-mbri"></span>
+                            </div>
+                            <div class="item-content">
+                                <h4 class="card-name mbr-fonts-style display-7 color-dark">Julien Lefèvre</h4>
+                                <p class="card-role mbr-fonts-style display-7 color-dark">Développeur Web</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6 item features-image item-mb">
+                        <div class="item-wrapper">
+                            <div class="item-img">
+                                <div class="image-wrap">
+                                    <img src="assets/media/team/team4.jpg" alt="">
+                                </div>
+                                <span class="mbr-iconfont mobi-mbri-letter mobi-mbri"></span>
+                            </div>
+                            <div class="item-content">
+                                <h4 class="card-name mbr-fonts-style display-7 color-dark">Claire Dubois</h4>
+                                <p class="card-role mbr-fonts-style display-7 color-dark">Designer UX</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- gallery area Start -->
+        <section data-bs-version="5.1"
+            class=" gallery pb-5features03 scalem5 cid-uyQ2xr86oe cid-uyQ2xr0N5L mbr-fullscreen">
+            <div class="">
+                <div class="title text-center">
+                    <h2 class="fw-5 fs-40 lh-120 ls-5 color-dark mb-16">Check our weather Pictures</h2>
+                </div>
+
+                <div class="showcase-slider">
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-1.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-2.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-3.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-4.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-5.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-6.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-1.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-2.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-3.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-4.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-5.png" alt="">
+                    </div>
+                    <div class="slider-block">
+                        <img src="assets/media/gallery/img-6.png" alt="">
+                    </div>
+                </div>
+                <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+            </div>
+        </section>
+        <!-- gallery area End -->
+
+        <section data-bs-version="5.1" class="article02 scalem5 cid-uyQ2xrb0UZ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="title-wrapper">
+                            <h2 class="mbr-section-title mbr-fonts-style display-5 color-dark">Restez Connecté Avec Nous</h2>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="text-wrapper">
+                            <p class="mbr-text mbr-fonts-style display-7 color-dark">Suivez-nous sur les réseaux sociaux pour des
+                                mises
+                                à jour hilarantes et des prévisions qui vous feront sourire !</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subscribe area Start -->
+        <section data-bs-version="5.1" class="cid-uyQ2xrb0UZ">
+            <div class="subscribe text-center">
+                <div class="container">
+                    <div class="content">
+                        <h2 class="mb-32">Stay Safe With <br> Weather Updates</h2>
+                        <form action="">
+                            <div class="input-group mb-0">
+                                <input type="email" class="form-control" id="email" name="email" required
+                                    placeholder="Your Email">
+                                <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Subscribe area End -->
+
+        <!-- Footer area Start -->
+        <footer class="footer  pt-100 pb-0">
+            <div class="container">
+                <div class="text-center">
+                    <a href="index-2.html" class="logo mb-32">
+                        <img src="assets/media/logo-dark.png" class="light" alt="">
+                        <img src="assets/media/logo-light.png" class="dark" alt="">
+                    </a>
+                    <p class="fw-4 fs-13 lh-120 color-dark-2 mb-32">A weather app that provides accurate and up-to-date
+                        weather <br> information for users.</p>
+                    <ul class="icon list-unstyled">
+                        <li>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9.49467 6.77491L15.323 0H13.9418L8.88114 5.88256L4.83917 0H0.177246L6.28949 8.89547L0.177246 16H1.55844L6.90267 9.78782L11.1713 16H15.8332L9.49433 6.77491H9.49467ZM7.60293 8.97384L6.98364 8.08805L2.0561 1.03974H4.17754L8.15411 6.72795L8.77341 7.61374L13.9425 15.0075H11.8211L7.60293 8.97418V8.97384Z"
+                                        fill="black" />
+                                </svg>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        </li>
+                    </ul>
+                    <ul class="footer-link list-unstyled mb-48">
+                        <li><a href="index.html" class="active">Home</a></li>
+                        <li><a href="news.html" class="">News</a></li>
+                        <li><a href="map.html" class="">Map</a></li>
+                        <li><a href="gallery.html" class="">Pictures</a></li>
+                        <li><a href="weather-map.html">Wheather map</a></li>
+                        <li><a href="contact.html" class="">Contact Us</a></li>
+                    </ul>
+                    <p class="fw-4 fs-13 color-dark-2 copyright m-0">©2024 WeatherPro, All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer area End -->
+
+
+
+    </div>
+
+    <script src="assets/js/vendor/jquery-3.6.3.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src="assets/js/vendor/slick.min.js"></script>
+    <script src="assets/js/vendor/jquery-appear.js"></script>
+    <script src="assets/js/vendor/jquery-validator.js"></script>
+    <script src="assets/js/vendor/chart.js"></script>
+    <script src="assets/js/vendor/smooth-scroll595e.js"></script>
+
+
+    <!-- Site Scripts -->
+    <script type="module" src="assets/js/script.js"></script>
+    <script src="assets/js/app.js"></script>
+
+
+
+</body>
+
+</html>
