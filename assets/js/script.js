@@ -43,9 +43,10 @@ function redirectToPageWithParams(page, params) {
 }
 
 function weatherByCoordinates(lat, lon) {
-    const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=8d198fb39cc17880e0fe676d046f90c1`;
-    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=8d198fb39cc17880e0fe676d046f90c1`;
-    const reverseGeoUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=5&appid=8d198fb39cc17880e0fe676d046f90c1`;
+    const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
+    const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    const reverseGeoUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=5&appid=${apiKey}`;
 
     fetch(reverseGeoUrl)
         .then(response => {
@@ -92,8 +93,9 @@ function weatherByCoordinates(lat, lon) {
 }
 
 function weather(city) {
-    const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=8d198fb39cc17880e0fe676d046f90c1`;
-    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=8d198fb39cc17880e0fe676d046f90c1`;
+    const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
+    const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
 
     fetch(currentWeatherUrl)
         .then(response => {
@@ -343,7 +345,7 @@ function getWorldWeather() {
 }
 
 function fetchWeatherData(country) {
-    const apiKey = '8d198fb39cc17880e0fe676d046f90c1';
+    const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
     const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${country.name}&appid=${apiKey}`;
 
     fetch(weatherUrl)
